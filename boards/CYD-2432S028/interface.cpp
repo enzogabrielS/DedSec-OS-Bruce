@@ -239,7 +239,17 @@ void InputHandler(void) {
         if (((millis() - tm) > 190 || LongPress) && touched) {
             tm = millis();
 #else
+#ifdef DEDSEC_OS
+        // Preserve Bruce's driver and long-press handling, while preventing a
+        // held resistive touch from selecting again after entering a new menu.
+        static bool dedsecTouchHeld = false;
+        const bool dedsecTouched = touch.touched();
+        const bool dedsecNewPress = dedsecTouched && !dedsecTouchHeld;
+        dedsecTouchHeld = dedsecTouched;
+        if (dedsecNewPress || (dedsecTouched && LongPress)) {
+#else
         if (touch.touched()) {
+#endif
             auto t = touch.getPointScaled();
 #endif
 #if !defined(TOUCH_GT911_I2C)

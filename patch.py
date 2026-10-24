@@ -1,6 +1,9 @@
 import hashlib
 from typing import TYPE_CHECKING, Any
 import requests
+import subprocess
+import os
+from pathlib import Path
 
 if TYPE_CHECKING:
     Import: Any = None
@@ -19,44 +22,34 @@ mcu = board_mcu.get("build.mcu", "")
 patchflag_path = join(FRAMEWORK_DIR,mcu, "lib", ".patched")
 
 # patch file only if we didn't do it befored
-if not isfile(join(FRAMEWORK_DIR,mcu, "lib", ".patched")):
-    original_file = join(FRAMEWORK_DIR,mcu, "lib", "libnet80211.a")
-    patched_file = join(
-        FRAMEWORK_DIR, mcu, "lib", "libnet80211.a.patched"
-    )
+original_file = Path(FRAMEWORK_DIR) / mcu / "lib" / "libnet80211.a"
+# Repair the interrupted state left by older patch.py before trusting its marker.
+if not original_file.exists() and original_file.with_suffix(".a.old").exists():
+    import shutil
+    shutil.copy2(original_file.with_suffix(".a.old"), original_file)
+    if Path(patchflag_path).exists():
+        Path(patchflag_path).unlink()
 
-    if mcu=="esp32c5" or mcu=="esp32c6" :
-        env.Execute(
-            "pio pkg exec -p toolchain-riscv32-esp -- riscv32-esp-elf-objcopy  --weaken-symbol=ieee80211_raw_frame_sanity_check %s %s"
-            % (original_file, patched_file)
-        )
-    elif mcu=="esp32p4":
-        """Do nothing"""
-    else:
-        env.Execute(
-            "pio pkg exec -p toolchain-xtensa-%s -- xtensa-%s-elf-objcopy  --weaken-symbol=ieee80211_raw_frame_sanity_check %s %s"
-            % (mcu, mcu, original_file, patched_file)
-        )
-
-    if isfile("%s.old" % (original_file)):
-        remove("%s.old" % (original_file))
-
-    if isfile(original_file):
-        rename(original_file, "%s.old" % (original_file))
-    else:
-        print("Patch: Original file not found")
-
-    if isfile(patched_file):
-        rename(patched_file, original_file)
-    else:
-        print("Patch: Patched file not found")
-
-
-    def _touch(path):
-        with open(path, "w") as fp:
-            fp.write("")
-
-    env.Execute(lambda *args, **kwargs: _touch(patchflag_path))
+if not isfile(patchflag_path) and mcu != "esp32p4":
+    riscv = mcu in ("esp32c5", "esp32c6")
+    package = "toolchain-riscv32-esp" if riscv else "toolchain-xtensa-esp-elf"
+    toolchain = env.PioPlatform().get_package_dir(package)
+    if not toolchain and not riscv:
+        toolchain = env.PioPlatform().get_package_dir("toolchain-xtensa-" + mcu)
+    if not toolchain:
+        raise RuntimeError("Cannot find installed toolchain for Bruce WiFi patch")
+    executable = "riscv32-esp-elf-objcopy" if riscv else "xtensa-" + mcu + "-elf-objcopy"
+    if os.name == "nt":
+        executable += ".exe"
+    objcopy = Path(toolchain) / "bin" / executable
+    patched_file = original_file.with_suffix(".a.patched")
+    # An argv list handles spaces safely and a failed command leaves the library intact.
+    subprocess.run([str(objcopy), "--weaken-symbol=ieee80211_raw_frame_sanity_check",
+                    str(original_file), str(patched_file)], check=True)
+    if not patched_file.is_file() or not patched_file.stat().st_size:
+        raise RuntimeError("Bruce WiFi patch produced no output")
+    patched_file.replace(original_file)
+    Path(patchflag_path).touch()
 
 
 def hash_file(file_path):

@@ -2,6 +2,19 @@
 #include "core/led_control.h"
 #include "display.h"
 
+#ifdef DEDSEC_OS
+bool parseThemeColor(JsonVariantConst value, uint16_t &color) {
+    if (!value.is<const char *>()) return false;
+    const char *text = value.as<const char *>();
+    if (!text || !*text || strlen(text) > 6) return false;
+    char *end = nullptr;
+    const unsigned long parsed = strtoul(text, &end, 16);
+    if (end == text || *end || parsed > 0xFFFF) return false;
+    color = static_cast<uint16_t>(parsed);
+    return true;
+}
+#endif
+
 struct ThemeEntry {
     const char *key;
     bool *flag;
@@ -87,9 +100,18 @@ bool BruceTheme::openThemeFile(FS *fs, String filepath, bool overwriteConfigSett
         uint16_t _secColor = bruceConfig.secColor;
         uint16_t _bgColor = bruceConfig.bgColor;
 
+#ifdef DEDSEC_OS
+        if ((!_th["priColor"].isNull() && !parseThemeColor(_th["priColor"], _priColor)) ||
+            (!_th["secColor"].isNull() && !parseThemeColor(_th["secColor"], _secColor)) ||
+            (!_th["bgColor"].isNull() && !parseThemeColor(_th["bgColor"], _bgColor))) {
+            displayError("Cor de tema invalida", true);
+            return false;
+        }
+#else
         if (!_th["priColor"].isNull()) { _priColor = strtoul(_th["priColor"], nullptr, 16); }
         if (!_th["secColor"].isNull()) { _secColor = strtoul(_th["secColor"], nullptr, 16); }
         if (!_th["bgColor"].isNull()) { _bgColor = strtoul(_th["bgColor"], nullptr, 16); }
+#endif
         _setUiColor(_priColor, &_secColor, &_bgColor);
 
 #ifdef HAS_RGB_LED

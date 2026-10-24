@@ -1,4 +1,8 @@
 #include "display.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_palette.h"
+#include "modules/others/dedsec.h"
+#endif
 #include "core/wifi/webInterface.h" // for server
 #include "core/wifi/wg.h"           //for isConnectedWireguard to print wireguard lock
 #include "mykeyboard.h"
@@ -66,12 +70,23 @@ void displayScrollingText(const String &text, Opt_Coord &coord, bool highlight) 
 ***************************************************************************************/
 void TouchFooter(uint16_t color) {
 #if defined(HAS_TOUCH)
+#ifdef DEDSEC_OS
+    // CYD reserves exactly 20 px, not the original 43 px rectangle.
+    tft.fillRect(0, tftHeight, tftWidth, 20, DedSec::Surface);
+    tft.drawFastHLine(0, tftHeight, tftWidth, color);
+    tft.setTextColor(DedSec::Text, DedSec::Surface);
+    tft.setTextSize(FM);
+    tft.drawCentreString("PREV", tftWidth / 6, tftHeight + 2, 1);
+    tft.drawCentreString("SEL", tftWidth / 2, tftHeight + 2, 1);
+    tft.drawCentreString("NEXT", 5 * tftWidth / 6, tftHeight + 2, 1);
+#else
     tft.drawRoundRect(5, tftHeight + 2, tftWidth - 10, 43, 5, color);
     tft.setTextColor(color);
     tft.setTextSize(FM);
     tft.drawCentreString("PREV", tftWidth / 6, tftHeight + 4, 1);
     tft.drawCentreString("SEL", tftWidth / 2, tftHeight + 4, 1);
     tft.drawCentreString("NEXT", 5 * tftWidth / 6, tftHeight + 4, 1);
+#endif
 #endif
 }
 /***************************************************************************************
@@ -313,7 +328,11 @@ int8_t displayMessage(
 }
 
 void displayError(const String &txt, bool waitKeyPress) {
+#ifdef DEDSEC_OS
+    displayRedStripe(txt, DedSec::Text, DedSec::Accent);
+#else
     displayRedStripe(txt);
+#endif
     Serial.println("ERR: " + txt);
 #ifndef HAS_SCREEN
     return;
@@ -323,7 +342,11 @@ void displayError(const String &txt, bool waitKeyPress) {
 }
 
 void displayWarning(const String &txt, bool waitKeyPress) {
+#ifdef DEDSEC_OS
+    displayRedStripe(txt, DedSec::Text, DedSec::Surface);
+#else
     displayRedStripe(txt, TFT_BLACK, TFT_YELLOW);
+#endif
     Serial.println("WARN: " + txt);
 #ifndef HAS_SCREEN
     return;
@@ -333,7 +356,11 @@ void displayWarning(const String &txt, bool waitKeyPress) {
 }
 
 void displayInfo(const String &txt, bool waitKeyPress) {
+#ifdef DEDSEC_OS
+    displayRedStripe(txt, DedSec::Text, DedSec::Surface);
+#else
     displayRedStripe(txt, TFT_WHITE, TFT_BLUE);
+#endif
     Serial.println("INFO: " + txt);
 #ifndef HAS_SCREEN
     return;
@@ -344,7 +371,11 @@ void displayInfo(const String &txt, bool waitKeyPress) {
 }
 
 void displaySuccess(const String &txt, bool waitKeyPress) {
+#ifdef DEDSEC_OS
+    displayRedStripe(txt, DedSec::Success, DedSec::Surface);
+#else
     displayRedStripe(txt, TFT_WHITE, TFT_DARKGREEN);
+#endif
     Serial.println("SUCCESS: " + txt);
 #ifndef HAS_SCREEN
     return;
@@ -729,6 +760,16 @@ int loopOptions(
                 Serial.print("Forcely ");
             }
             if (chosen >= options.size() || !options[chosen].enabled) continue;
+#ifdef DEDSEC_OS
+            if (!dedsecConfirmMenuOperation(options[chosen].label)) {
+                redraw = true;
+                firstRender = true;
+                drawMainBorder();
+                continue;
+            }
+            // Immediate press feedback without an extra animation/wait.
+            tft.drawFastHLine(6, 25, tftWidth - 12, DedSec::Text);
+#endif
             Serial.println("Selected: " + String(options[chosen].label));
             options[chosen].operation();
             break;
@@ -912,13 +953,30 @@ void drawSubmenu(int index, std::vector<Option> &options, const char *title) {
 
 #if defined(HAS_TOUCH)
     tft.drawCentreString("\\/", tftWidth / 2, middle_down + (FM * LH + 6), 1);
+#ifdef DEDSEC_OS
+    tft.setTextSize(1);
+    tft.setTextColor(DedSec::Text, bruceConfig.bgColor);
+#else
     tft.setTextColor(getColorVariation(bruceConfig.priColor), bruceConfig.bgColor);
+#endif
     tft.drawString("[ x ]", 7, 7, 1);
     TouchFooter();
 #endif
 }
 
 void drawStatusBar() {
+#ifdef DEDSEC_OS
+    tft.setTextDatum(TL_DATUM);
+    tft.fillRect(6, 6, tftWidth - 12, 19, bruceConfig.bgColor);
+    tft.setTextColor(DedSec::Text, bruceConfig.bgColor);
+    tft.setTextSize(1);
+    tft.drawString("DEDSEC OS", 44, 12, 1);
+    tft.drawFastHLine(6, 25, tftWidth - 12, bruceConfig.priColor);
+    // States only: no synthetic clock or battery indicator on a bare CYD.
+    tft.setTextColor(bruceConfig.secColor, bruceConfig.bgColor);
+    tft.drawRightString(WiFi.isConnected() ? "WIFI:LINK" : "WIFI:--", tftWidth - 12, 12, 1);
+    return;
+#endif
     uint8_t bat = getBattery();
     if (bat > 0) drawBatteryStatus(bat);
 

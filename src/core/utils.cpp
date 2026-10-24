@@ -214,8 +214,10 @@ void showDeviceInfo() {
     area.addLine("IR RX: " + String(RXLED));
     area.addLine("");
 
+#ifndef DEDSEC_OS
     area.addLine("[BAT]");
     area.addLine("Charge: " + String(getBattery()) + "%");
+#endif
 #ifdef USE_BQ27220_VIA_I2C
     area.addLine("BQ27220 ADDR: " + String(BQ27220_I2C_ADDRESS));
     area.addLine("Curr Capacity: " + String(bq.getRemainCap()) + "mAh");

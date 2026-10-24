@@ -1,0 +1,10 @@
+{
+  "environment": "CYD-2432S028",
+  "application_bytes": 3584496,
+  "application_partition_bytes": 3932160,
+  "application_free_bytes": 347664,
+  "merged_bytes": 3650032,
+  "application_sha256": "435e7e9f1684d7318546d2ab645b2ffdfe1025632eed14a48da11a90d8e4d1b5",
+  "merged_sha256": "2d4db44b1f92edf27098dff80afbe2fd820d9b7e4638f55130775b4d2f26d132",
+  "physical_tests": "not performed"
+}

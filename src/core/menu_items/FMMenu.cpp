@@ -4,6 +4,13 @@
 #include "modules/fm/fm.h"
 
 void FMMenu::optionsMenu() {
+#if defined(DEDSEC_OS) && defined(FM_RSTPIN)
+    // The upstream CYD preset specifies GPIO40, absent on a classic ESP32.
+    if (!GPIO_IS_VALID_OUTPUT_GPIO(FM_RSTPIN)) {
+        displayError("FM: configure RST valido", true);
+        return;
+    }
+#endif
     options = {
 #if !defined(LITE_VERSION) and defined(FM_SI4713)
         // #if defined(FM_SI4713)

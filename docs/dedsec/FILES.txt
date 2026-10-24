@@ -1,0 +1,57 @@
+Arquivos existentes modificados:
+
+.gitignore
+README.md
+boards/CYD-2432S028/interface.cpp
+patch.py
+src/core/config.cpp
+src/core/config.h
+src/core/display.cpp
+src/core/main_menu.cpp
+src/core/main_menu.h
+src/core/menu_items/ConfigMenu.cpp
+src/core/menu_items/FMMenu.cpp
+src/core/scrollableTextArea.cpp
+src/core/settings.cpp
+src/core/theme.cpp
+src/core/theme.h
+src/core/utils.cpp
+src/main.cpp
+src/modules/ble/ble_common.cpp
+src/modules/ble/ble_common.h
+src/modules/wifi/ap_info.h
+
+Arquivos de fonte/configuracao/documentacao criados:
+
+boards/CYD-2432S028/DedSec-CYD-2432S028.ini
+docs/dedsec/AUDITORIA.md
+docs/dedsec/CYD-2432S028-image.json
+docs/dedsec/DedSec-CYD-2432S028-image.json
+docs/dedsec/FILES.txt
+docs/dedsec/README.md
+docs/dedsec/VALIDACAO.md
+docs/dedsec/build-evidence.zip
+docs/dedsec/dependencies-resolved.json
+docs/dedsec/phase2-image.json
+docs/dedsec/phase3-image.json
+docs/dedsec/phase4-image.json
+src/core/dedsec_palette.h
+src/core/menu_items/DedSecMenu.cpp
+src/core/menu_items/DedSecMenu.h
+src/modules/others/dedsec.cpp
+src/modules/others/dedsec.h
+tools/dedsec/build.ps1
+tools/dedsec/check_partition.py
+tools/dedsec/test_verify_image.py
+tools/dedsec/verify_image.py
+
+Artefatos de firmware gerados:
+Bruce-CYD-2432S028.bin
+Bruce-DedSec-CYD-2432S028.bin
+.pio/build/DedSec-CYD-2432S028/firmware.bin
+.pio/build/DedSec-CYD-2432S028/firmware.elf
+
+Dependencias e caches gerados automaticamente:
+.venv/
+.pio-core/
+.pio/

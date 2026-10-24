@@ -1,0 +1,230 @@
+[
+  {
+    "type": "library",
+    "name": "Adafruit Si4713 Library",
+    "version": "1.2.3",
+    "spec": {
+      "owner": "adafruit",
+      "id": 756,
+      "name": "Adafruit Si4713 Library",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "AnimatedGIF",
+    "version": "2.2.3",
+    "spec": {
+      "owner": "bitbank2",
+      "id": 10952,
+      "name": "AnimatedGIF",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "ArduinoJson",
+    "version": "7.4.3",
+    "spec": {
+      "owner": "bblanchon",
+      "id": 64,
+      "name": "ArduinoJson",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "AsyncTCP",
+    "version": "3.5.0",
+    "spec": {
+      "owner": "esp32async",
+      "id": 18273,
+      "name": "AsyncTCP",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "ESP32Time",
+    "version": "2.0.6",
+    "spec": {
+      "owner": "fbiego",
+      "id": 11703,
+      "name": "ESP32Time",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "ESP8266Audio",
+    "version": "2.4.1",
+    "spec": {
+      "owner": "earlephilhower",
+      "id": 1964,
+      "name": "ESP8266Audio",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "ESP8266SAM",
+    "version": "1.1.0",
+    "spec": {
+      "owner": "earlephilhower",
+      "id": 2885,
+      "name": "ESP8266SAM",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "ESPAsyncWebServer",
+    "version": "3.12.1",
+    "spec": {
+      "owner": "esp32async",
+      "id": 18274,
+      "name": "ESPAsyncWebServer",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "FastLED",
+    "version": "3.10.8",
+    "spec": {
+      "owner": "fastled",
+      "id": 126,
+      "name": "FastLED",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "FFT",
+    "version": "0.0.1",
+    "spec": {
+      "owner": "tinyu-zhao",
+      "id": 12741,
+      "name": "FFT",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "JPEGDecoder",
+    "version": "2.0.0",
+    "spec": {
+      "owner": "bodmer",
+      "id": 1467,
+      "name": "JPEGDecoder",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "LibSSH-ESP32",
+    "version": "5.10.0",
+    "spec": {
+      "owner": "ewpa",
+      "id": 8250,
+      "name": "LibSSH-ESP32",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "NimBLE-Arduino",
+    "version": "2.5.1",
+    "spec": {
+      "owner": "h2zero",
+      "id": 11070,
+      "name": "NimBLE-Arduino",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "NTPClient",
+    "version": "3.2.1",
+    "spec": {
+      "owner": "arduino-libraries",
+      "id": 551,
+      "name": "NTPClient",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "PNGdec",
+    "version": "1.1.6",
+    "spec": {
+      "owner": "bitbank2",
+      "id": 12397,
+      "name": "PNGdec",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "RadioLib",
+    "version": "7.8.1",
+    "spec": {
+      "owner": "jgromes",
+      "id": 5795,
+      "name": "RadioLib",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "RF24",
+    "version": "1.4.11",
+    "spec": {
+      "owner": "nrf24",
+      "id": 433,
+      "name": "RF24",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "Time",
+    "version": "1.6.1",
+    "spec": {
+      "owner": "paulstoffregen",
+      "id": 44,
+      "name": "Time",
+      "requirements": null,
+      "uri": null
+    }
+  },
+  {
+    "type": "library",
+    "name": "TinyGPSPlus",
+    "version": "1.1.0",
+    "spec": {
+      "owner": "mikalhart",
+      "id": 1655,
+      "name": "TinyGPSPlus",
+      "requirements": null,
+      "uri": null
+    }
+  }
+]

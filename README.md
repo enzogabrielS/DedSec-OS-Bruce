@@ -1,3 +1,22 @@
+# DedSec OS — CYD ESP32-2432S028
+
+Personalização do [Bruce oficial](https://github.com/BruceDevices/firmware)
+para a CYD padrão, com tema DedSec, dashboard de estado e diagnóstico,
+preservando a arquitetura, os drivers e as ferramentas compatíveis da base.
+
+- [Compilação, instalação e recuperação](docs/dedsec/README.md)
+- [Relatório de validação e limitações](docs/dedsec/VALIDACAO.md)
+- [Auditoria da placa e da arquitetura](docs/dedsec/AUDITORIA.md)
+
+Ambiente PlatformIO: `DedSec-CYD-2432S028`. Compilação validada;
+inicialização, touchscreen e estabilidade ainda exigem teste na placa física.
+Utilize as ferramentas somente em equipamentos próprios ou ambientes autorizados.
+A licença AGPL-3.0 e os avisos de terceiros da base foram preservados.
+
+---
+
+Documentação original do Bruce:
+
 ![Bruce Main Menu](./media/pictures/bruce_banner.jpg)
 
 # :shark: Bruce

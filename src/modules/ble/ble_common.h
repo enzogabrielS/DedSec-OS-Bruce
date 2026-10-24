@@ -21,7 +21,11 @@
 #define SCAN_WINDOW 99
 
 // Maximum number of BLE devices to display to prevent memory issues
+#ifdef DEDSEC_OS
+#define MAX_DISPLAY_DEVICES 24
+#else
 #define MAX_DISPLAY_DEVICES 100
+#endif
 
 // Memory protection: Reduce scan time in low-memory situations
 #define SCAN_TIME_REDUCED 3
@@ -30,7 +34,9 @@ extern BLEScan *pBLEScan;
 extern int scanTime;
 
 void ble_test();
-#if 0
+#if defined(DEDSEC_OS)
+constexpr bool FORCE_RADIO_TEARDOWN_ON_SWITCH = true;
+#elif 0
 #ifdef BOARD_HAS_PSRAM
 constexpr bool FORCE_RADIO_TEARDOWN_ON_SWITCH = false;
 #else

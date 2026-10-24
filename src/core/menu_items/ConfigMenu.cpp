@@ -1,4 +1,7 @@
 #include "ConfigMenu.h"
+#ifdef DEDSEC_OS
+#include "modules/others/dedsec.h"
+#endif
 #include "../mykeyboard.h"
 #include "core/display.h"
 #include "core/i2c_finder.h"
@@ -68,6 +71,9 @@ void ConfigMenu::displayUIMenu() {
             {"Orientation", [this]() { lambdaHelper(gsetRotation, true)(); }},
             {"UI Color",    [this]() { setUIColor(); }                      },
             {"UI Theme",    [this]() { setTheme(); }                        },
+#ifdef DEDSEC_OS
+            {"DedSec UI", dedsecSettings},
+#endif
             {"Back",        []() {}                                         },
         };
 

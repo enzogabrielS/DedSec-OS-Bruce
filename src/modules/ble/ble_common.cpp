@@ -1,4 +1,8 @@
 #include "ble_common.h"
+#ifdef DEDSEC_OS
+#include "modules/others/dedsec.h"
+#include <esp_bt.h>
+#endif
 #include "core/mykeyboard.h"
 #include "core/radio_mem.h"
 #include "core/ram_profile.h"
@@ -70,14 +74,19 @@ void ble_info(const String &name, const String &address, const String &signal) {
     tft.drawString("Name: " + name, 10, 48);
     tft.drawString("Adresse: " + address, 10, 66);
     tft.drawString("Signal: " + String(signal) + " dBm", 10, 84);
+#ifdef DEDSEC_OS
+    tft.drawCentreString("SEL / ESC: voltar", tftWidth / 2, tftHeight - 20, 1);
+    while (check(SelPress)) vTaskDelay(pdMS_TO_TICKS(20));
+    while (!returnToMenu && !check(SelPress) && !check(EscPress)) vTaskDelay(pdMS_TO_TICKS(20));
+#else
     tft.drawCentreString("   Press " + String(BTN_ALIAS) + " to act", tftWidth / 2, tftHeight - 20, 1);
-
     delay(300);
     while (!check(SelPress)) {
         while (!check(SelPress)) { yield(); }
         returnToMenu = true;
         break;
     }
+#endif
 }
 
 class AdvertisedDeviceCallbacks : public NimBLEScanCallbacks {};
@@ -87,13 +96,24 @@ static AdvertisedDeviceCallbacks g_scanCallbacks;
 static bool is_ble_inited = false;
 
 void stopBLEStack() {
+#ifdef DEDSEC_OS
+    // Another Bruce BLE module may have deinitialized/replaced its scan object.
+    // Never dereference the cached pointer when it no longer belongs to NimBLE.
+    if (BLEDevice::isInitialized() && pBLEScan && pBLEScan == BLEDevice::getScan()) {
+#else
     if (pBLEScan) {
+#endif
         pBLEScan->stop();
         pBLEScan->clearResults();
         pBLEScan = nullptr;
     }
 
+#ifdef DEDSEC_OS
+    pBLEScan = nullptr;
+    if (BLEDevice::isInitialized()) {
+#else
     if (is_ble_inited) {
+#endif
 #if !defined(LITE_VERSION)
         if (BLEStateManager::isBLEActive() || BLEStateManager::getActiveClientCount() > 0) {
             BLEStateManager::deinitBLE(true);
@@ -142,7 +162,14 @@ bool ble_scan_setup() {
         return false;
     }
 
+#ifdef DEDSEC_OS
+    if (!BLEDevice::init("")) {
+        displayError("Falha ao iniciar BLE", true);
+        return false;
+    }
+#else
     BLEDevice::init("");
+#endif
     is_ble_inited = true;
 
     RAM_LOG("ble-scan post-init");
@@ -175,26 +202,66 @@ bool ble_scan_setup() {
 }
 
 void ble_scan() {
+#ifdef DEDSEC_OS
+    if (WiFi.getMode() != WIFI_MODE_NULL) {
+        if (!dedsecConfirmMenuOperation("BLE radio switch")) return;
+    } else if (esp_bt_controller_get_status() != ESP_BT_CONTROLLER_STATUS_IDLE) {
+        if (!dedsecConfirmMenuOperation("BLE radio reset")) return;
+    }
+#endif
     displayTextLine("Scanning..");
 
     options = {};
+#ifdef DEDSEC_OS
+    options.reserve(MAX_DISPLAY_DEVICES + 2); // results + limit notice + Main Menu
+#else
     options.reserve(MAX_DISPLAY_DEVICES);
+#endif
 
+#ifndef DEDSEC_OS
     bool bleWasActiveBefore = BLEConnected || (BLEDevice::getServer() != nullptr);
 #if !defined(LITE_VERSION)
     bleWasActiveBefore =
         bleWasActiveBefore || BLEStateManager::isBLEActive() || BLEStateManager::getActiveClientCount() > 0;
 #endif
+#endif
 
     if (!ble_scan_setup() || pBLEScan == nullptr) {
+#ifdef DEDSEC_OS
+        stopBLEStack();
+#else
         displayError("Failed to init BLE scan");
+#endif
         return;
     }
 
     pBLEScan->clearResults();
 
     try {
+#ifdef DEDSEC_OS
+        pBLEScan->setActiveScan(false);
+        pBLEScan->setDuplicateFilter(1);
+        pBLEScan->setMaxResults(MAX_DISPLAY_DEVICES);
+        if (!pBLEScan->start(scanTime * 1000, false)) {
+            stopBLEStack();
+            displayError("Falha ao iniciar busca BLE", true);
+            return;
+        }
+        const uint32_t started = millis();
+        while (pBLEScan->isScanning()) {
+            const bool timeout = millis() - started > uint32_t(scanTime * 1000 + 2000);
+            if (check(EscPress) || returnToMenu || timeout) {
+                stopBLEStack();
+                RAM_LOG("dedsec-ble-cancel");
+                if (timeout) displayError("Timeout na busca BLE", true);
+                return;
+            }
+            vTaskDelay(pdMS_TO_TICKS(20));
+        }
+        BLEScanResults foundDevices = pBLEScan->getResults();
+#else
         BLEScanResults foundDevices = pBLEScan->getResults(scanTime * 1000, false);
+#endif
         int deviceCount = foundDevices.getCount();
         int processedCount = 0;
         int maxToProcess = min(deviceCount, MAX_DISPLAY_DEVICES);
@@ -209,6 +276,12 @@ void ble_scan() {
             String bt_signal;
 
             bt_name = advertisedDevice->getName().c_str();
+#ifdef DEDSEC_OS
+            bt_name = bt_name.substring(0, 32);
+            for (unsigned n = 0; n < bt_name.length(); ++n) {
+                if (uint8_t(bt_name[n]) < 32 || uint8_t(bt_name[n]) > 126) bt_name.setCharAt(n, '?');
+            }
+#endif
             bt_address = advertisedDevice->getAddress().toString().c_str();
             bt_signal = String(advertisedDevice->getRSSI());
 
@@ -222,15 +295,31 @@ void ble_scan() {
             }
         }
 
-        if (options.size() >= MAX_DISPLAY_DEVICES) { options.emplace_back("... and more devices", nullptr); }
+        if (options.size() >= MAX_DISPLAY_DEVICES) {
+#ifdef DEDSEC_OS
+            options.emplace_back("Limite: 24 resultados", []() {}, false, nullptr, nullptr, false, false);
+#else
+            options.emplace_back("... and more devices", nullptr);
+#endif
+        }
     } catch (...) {
+#ifdef DEDSEC_OS
+        stopBLEStack();
+        options.clear();
+        displayError("BLE scan error", true);
+#else
         displayError("BLE scan error");
         pBLEScan->clearResults();
+#endif
         return;
     }
 
     if (pBLEScan) { pBLEScan->stop(); }
 
+#ifdef DEDSEC_OS
+    stopBLEStack();
+    RAM_LOG("dedsec-ble-released");
+#else
     if (!bleWasActiveBefore) {
 #if !defined(LITE_VERSION)
         if (!BLEStateManager::isBLEActive()) { stopBLEStack(); }
@@ -238,14 +327,26 @@ void ble_scan() {
         stopBLEStack();
 #endif
     }
+#endif
 
     if (!options.empty()) {
         addOptionToMainMenu();
+#ifdef DEDSEC_OS
+        int selected = 0;
+        do {
+            selected = loopOptions(options, MENU_TYPE_SUBMENU, "BLE / PASSIVO", selected);
+        } while (!returnToMenu && selected >= 0 && selected < int(options.size()) - 1);
+#else
         loopOptions(options);
+#endif
         options.clear();
     } else {
+#ifdef DEDSEC_OS
+        displayInfo("Nenhum anuncio BLE encontrado", true);
+#else
         displayError("No devices found");
         delay(1000);
+#endif
     }
 }
 

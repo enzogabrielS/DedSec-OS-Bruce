@@ -2,9 +2,18 @@
 #define __THEME_H
 #include "sd_functions.h"
 #include <ArduinoJson.h>
+#ifdef DEDSEC_OS
+bool parseThemeColor(JsonVariantConst value, uint16_t &color);
+#endif
 
+#ifdef DEDSEC_OS
+#include "dedsec_palette.h"
+#define DEFAULT_PRICOLOR DedSec::Accent
+#define DEFAULT_SECCOLOR DedSec::Muted
+#else
 #define DEFAULT_PRICOLOR 0xA80F
 #define DEFAULT_SECCOLOR 0xCB76
+#endif
 
 struct themeFiles {
     String wifi = "";
@@ -64,7 +73,11 @@ public:
 
     // Theme colors in RGB565 format
     uint16_t priColor = DEFAULT_PRICOLOR;
+#ifdef DEDSEC_OS
+    uint16_t secColor = DEFAULT_SECCOLOR;
+#else
     uint16_t secColor = DEFAULT_PRICOLOR - 0x2000;
+#endif
     uint16_t bgColor = 0x0000;
 
     // UI Color

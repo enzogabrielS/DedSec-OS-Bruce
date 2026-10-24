@@ -2,6 +2,12 @@
 #include "mifare_keys_manager.h"
 #include "sd_functions.h"
 #include <algorithm>
+#ifdef DEDSEC_OS
+#include <globals.h>
+namespace {
+constexpr size_t MaxConfigBytes = 32 * 1024;
+}
+#endif
 
 JsonDocument BruceConfig::toJson() const {
     JsonDocument jsonDoc;
@@ -88,9 +94,19 @@ JsonDocument BruceConfig::toJson() const {
 
 void BruceConfig::fromFile(bool checkFS) {
     FS *fs;
+#ifdef DEDSEC_OS
+    // Internal storage is authoritative; an older SD mirror must not undo a
+    // successfully saved setting after a failed SD write or card removal.
+    if (LittleFS.exists(filepath)) {
+        fs = &LittleFS;
+    } else
+#endif
     if (checkFS) {
         if (!getFsStorage(fs)) {
             log_i("Fail getting filesystem for config");
+#ifdef DEDSEC_OS
+            configStorageOk = false;
+#endif
             return;
         }
     } else {
@@ -107,34 +123,67 @@ void BruceConfig::fromFile(bool checkFS) {
     file = fs->open(filepath, FILE_READ);
     if (!file) {
         log_i("Config file not found. Using default values");
+#ifdef DEDSEC_OS
+        configStorageOk = false;
+#endif
         return;
     }
 
     // Deserialize the JSON document
     JsonDocument jsonDoc;
+#ifdef DEDSEC_OS
+    if (file.size() > MaxConfigBytes) {
+        configStorageOk = false;
+        Serial.println("[DedSec] Config exceeds 32 KiB; defaults kept");
+        return;
+    }
+#endif
     if (deserializeJson(jsonDoc, file)) {
         Serial.println("Failed to read config file, using default configuration");
+#ifdef DEDSEC_OS
+        configStorageOk = false;
+#endif
         return;
     }
     file.close();
+
+#ifdef DEDSEC_OS
+    if (!jsonDoc.is<JsonObject>()) {
+        configStorageOk = false;
+        Serial.println("[DedSec] Invalid config root; defaults kept");
+        return;
+    }
+#endif
 
     JsonObject setting = jsonDoc.as<JsonObject>();
     int count = 0;
 
     if (!setting["priColor"].isNull()) {
+#ifdef DEDSEC_OS
+        if (!parseThemeColor(setting["priColor"], priColor)) configStorageOk = false;
+#else
         priColor = strtoul(setting["priColor"], nullptr, 16);
+#endif
     } else {
         count++;
         log_e("Fail");
     }
     if (!setting["secColor"].isNull()) {
+#ifdef DEDSEC_OS
+        if (!parseThemeColor(setting["secColor"], secColor)) configStorageOk = false;
+#else
         secColor = strtoul(setting["secColor"], nullptr, 16);
+#endif
     } else {
         count++;
         log_e("Fail");
     }
     if (!setting["bgColor"].isNull()) {
+#ifdef DEDSEC_OS
+        if (!parseThemeColor(setting["bgColor"], bgColor)) configStorageOk = false;
+#else
         bgColor = strtoul(setting["bgColor"], nullptr, 16);
+#endif
     } else {
         count++;
         log_e("Fail");
@@ -440,6 +489,43 @@ void BruceConfig::saveFile() {
     FS *fs = &LittleFS;
     JsonDocument jsonDoc = toJson();
 
+#ifdef DEDSEC_OS
+    if (jsonDoc.overflowed()) {
+        configStorageOk = false;
+        Serial.println("[DedSec] Not enough memory to serialize config");
+        return;
+    }
+    const String temporary = String(filepath) + ".tmp";
+    const size_t expected = measureJsonPretty(jsonDoc);
+    if (expected > MaxConfigBytes) {
+        configStorageOk = false;
+        Serial.println("[DedSec] Config save exceeds 32 KiB");
+        return;
+    }
+    File pending = fs->open(temporary, FILE_WRITE);
+    if (!pending) {
+        configStorageOk = false;
+        Serial.println("[DedSec] Cannot open config temporary file");
+        return;
+    }
+    const size_t written = serializeJsonPretty(jsonDoc, pending);
+    pending.flush();
+    const bool valid = written == expected && pending.size() == expected && !pending.getWriteError();
+    pending.close();
+    configStorageOk = valid && fs->rename(temporary, filepath);
+    if (!configStorageOk) {
+        fs->remove(temporary);
+        Serial.println("[DedSec] Config save failed; previous file preserved");
+        return;
+    }
+    // Mirror remains compatible with Bruce. Failure is visible and does not
+    // invalidate the authoritative, successfully committed LittleFS file.
+    if (sdcardMounted && !copyToFs(LittleFS, SD, filepath, false)) {
+        Serial.println("[DedSec] SD config mirror failed; LittleFS is current");
+    }
+    return;
+#endif
+
     // Open file for writing
     File file = fs->open(filepath, FILE_WRITE);
     if (!file) {
@@ -466,6 +552,10 @@ void BruceConfig::factoryReset() {
 }
 
 void BruceConfig::validateConfig() {
+#ifdef DEDSEC_OS
+    bright = constrain(bright, 0, 100);
+    instantBoot = instantBoot == 1 ? 1 : 0;
+#endif
     validateDimmerValue();
     validateBrightValue();
     validateTmzValue();

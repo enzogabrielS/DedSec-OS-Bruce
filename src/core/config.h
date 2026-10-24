@@ -46,6 +46,10 @@ public:
     int soundVolume = 100;
     int wifiAtStartup = 0;
     int instantBoot = 0;
+#ifdef DEDSEC_OS
+    // Runtime health only: never written back on every dashboard update.
+    bool configStorageOk = true;
+#endif
     String keyboardLang = "QWERTY"; // "QWERTY" | "AZERTY" | "QWERTZ"
 
 #ifdef HAS_RGB_LED

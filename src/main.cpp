@@ -1,4 +1,7 @@
 #include "core/main_menu.h"
+#ifdef DEDSEC_OS
+#include "modules/others/dedsec.h"
+#endif
 #include <globals.h>
 
 #include "core/bus_HAL.h"
@@ -279,6 +282,10 @@ void boot_screen() {
  **  Draw boot screen
  *********************************************************************/
 void boot_screen_anim() {
+#ifdef DEDSEC_OS
+    // Real setup stages already drew the boot sequence. No decorative wait.
+    return;
+#else
     boot_screen();
     int i = millis();
     // checks for boot.jpg in SD and LittleFS for customization
@@ -363,6 +370,7 @@ void boot_screen_anim() {
 
     // Clear splashscreen
     tft.fillScreen(bruceConfig.bgColor);
+#endif
 }
 
 /*********************************************************************
@@ -483,8 +491,12 @@ void setup() {
     tft.setRotation(bruceConfigPins.rotation);
     tft.fillScreen(TFT_BLACK);
     // bruceConfig is not read yet.. just to show something on screen due to long boot time
+#ifdef DEDSEC_OS
+    dedsecBootStage("Montando arquivos", 1);
+#else
     tft.setTextColor(TFT_PURPLE, TFT_BLACK);
     tft.drawCentreString("Booting", tft.width() / 2, tft.height() / 2, 1);
+#endif
     RAM_LOG("first-display-elem"); // first element drawn on screen
 #else
     tft.begin();
@@ -493,6 +505,9 @@ void setup() {
     begin_storage();
     RAM_LOG("after-storage"); // bruceConfig/bruceConfigPins loaded from FS
     begin_tft();
+#ifdef DEDSEC_OS
+    dedsecBootStage("Preparando sistema", 2);
+#endif
     init_clock();
     init_led();
     RAM_LOG("after-tft-clock-led");
@@ -521,6 +536,9 @@ void setup() {
     // so re-apply the stored brightness after that stage completes.
     setBrightness(bruceConfig.bright, false);
     // end of post gpio begin
+#ifdef DEDSEC_OS
+    dedsecBootStage("Iniciando entrada", 3);
+#endif
 
     // #ifndef USE_TFT_eSPI_TOUCH
     // This task keeps running all the time, will never stop
@@ -566,6 +584,9 @@ void setup() {
 #endif
     //  start a task to handle serial commands while the webui is running
     startSerialCommandsHandlerTask(true);
+#ifdef DEDSEC_OS
+    dedsecBootStage(bruceConfig.startupApp.isEmpty() ? "Abrindo menu" : "Iniciando app", 4);
+#endif
 
     wakeUpScreen();
     if (bruceConfig.startupApp != "" && !startupApp.startApp(bruceConfig.startupApp)) {
@@ -594,6 +615,13 @@ void loop() {
         }
         if (interpreter_state == -1) { interpreterTaskHandler = NULL; }
         previousMillis = millis(); // ensure that will not dim screen when get back to menu
+    }
+#endif
+#ifdef DEDSEC_OS
+    static bool dashboardAtStartup = true;
+    if (dashboardAtStartup) {
+        dashboardAtStartup = false;
+        if (bruceConfig.startupApp.isEmpty()) dedsecDashboard();
     }
 #endif
     tft.fillScreen(bruceConfig.bgColor);

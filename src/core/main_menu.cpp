@@ -2,9 +2,16 @@
 #include "display.h"
 #include "utils.h"
 #include <globals.h>
+#ifdef DEDSEC_OS
+#include "core/dedsec_palette.h"
+#include "modules/others/dedsec.h"
+#endif
 
 MainMenu::MainMenu() {
     _menuItems = {
+#ifdef DEDSEC_OS
+        &dedsecMenu,
+#endif
         &wifiMenu,
         &bleMenu,
         &rfMenu,
@@ -46,7 +53,12 @@ void MainMenu::begin(void) {
             options.push_back(
                 {// selected lambda
                  itemName,
-                 [this, i]() { _menuItems[i]->optionsMenu(); },
+                 [this, i]() {
+#ifdef DEDSEC_OS
+                     if (!dedsecConfirmMenuOperation(_menuItems[i]->getName(), true)) return;
+#endif
+                     _menuItems[i]->optionsMenu();
+                 },
                  false,                                  // selected = false
                  [](void *menuItem, bool shouldRender) { // render lambda
                      if (!shouldRender) return false;
@@ -56,6 +68,13 @@ void MainMenu::begin(void) {
                      float scale = float((float)tftWidth / (float)240);
                      if (bruceConfigPins.rotation & 0b01) scale = float((float)tftHeight / (float)135);
                      obj->draw(scale);
+#ifdef DEDSEC_OS
+                     if (const char *requirement = dedsecHardwareRequirement(obj->getName())) {
+                         tft.setTextSize(1);
+                         tft.setTextColor(DedSec::Muted, bruceConfig.bgColor);
+                         tft.drawCentreString(requirement, tftWidth / 2, tftHeight - 10, 1);
+                     }
+#endif
 #if defined(HAS_TOUCH)
                      TouchFooter();
 #endif
