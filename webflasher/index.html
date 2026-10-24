@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Instale a DedSec OS na CYD ESP32-2432S028 pelo USB, direto do navegador. Firmware baseada no Bruce, com verificação de integridade.">
+  <meta name="theme-color" content="#0b0b0d">
+  <title>DedSec OS · Webflasher</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <header class="masthead wrap">
+    <a class="wordmark" href="./" aria-label="DedSec OS, início"><span aria-hidden="true">[<b> / </b>]</span> DEDSEC<span class="muted"> OS</span></a>
+    <a class="source-link" href="https://github.com/enzogabrielS/DedSec-OS-Bruce">Código aberto <span aria-hidden="true">↗</span></a>
+  </header>
+  <main class="wrap">
+    <div class="eyebrow"><span class="red-line"></span> CYD ESP32-2432S028 / USB INSTALLER</div>
+    <section class="intro" aria-labelledby="title">
+      <div><h1 id="title">DedSec OS.<br><span>Direto para a sua CYD.</span></h1>
+      <p class="lede">Conecte a placa. Confira a versão. Grave pelo navegador.<br>O Bruce por dentro, uma nova identidade na tela.</p></div>
+      <div class="target" aria-label="Hardware de destino">
+        <span class="muted">TARGET / 01</span><strong>ESP32 clássico</strong>
+        <span>ILI9341 · touch resistivo</span><span>320 × 240 · flash 4 MiB</span>
+        <span class="target-note">CYD padrão · sem PSRAM</span>
+      </div>
+    </section>
+
+    <section class="installer" aria-labelledby="install-title">
+      <div class="install-main">
+        <div class="section-number">01 / INSTALAR</div>
+        <h2 id="install-title">Do USB à tela.</h2>
+        <p>Use Chrome ou Edge no computador, com um cabo USB de <strong>dados</strong>. Feche monitores seriais e retire módulos externos antes de começar.</p>
+        <div class="checks">
+          <label><input type="checkbox" id="board-confirm"><span>Minha placa é a <strong>CYD ESP32-2432S028 padrão</strong>, com ILI9341, touch resistivo e flash de 4 MiB.</span></label>
+          <label><input type="checkbox" id="data-confirm"><span>Entendo que a instalação substitui a firmware. Já salvei o que preciso; a opção <em>Erase device</em> também apaga configurações e arquivos internos.</span></label>
+        </div>
+        <esp-web-install-button id="installer" hidden>
+          <button slot="activate" id="install-button" class="primary" disabled>Conectar e instalar <span aria-hidden="true">→</span></button>
+          <p slot="unsupported" class="notice">Este navegador não oferece Web Serial. Abra no Chrome ou Edge do computador.</p>
+          <p slot="not-allowed" class="notice">Abra pelo endereço HTTPS publicado ou por localhost. Abrir o HTML como arquivo não permite gravar.</p>
+        </esp-web-install-button>
+        <p id="compatibility" class="notice" hidden></p>
+        <p id="readiness" class="hint">Verificando o pacote de instalação…</p>
+        <noscript><p class="notice">Ative JavaScript para verificar o binário e usar o instalador.</p></noscript>
+        <p class="hint">O seletor de porta abre somente após seu clique. A página não acessa sua USB automaticamente.</p>
+      </div>
+      <aside class="release" aria-label="Informações reais do pacote">
+        <div class="section-number">PACOTE / VERIFICAÇÃO</div>
+        <p id="integrity-status" role="status" aria-live="polite" class="status">Lendo manifesto e firmware…</p>
+        <dl><div><dt>Versão</dt><dd id="version">—</dd></div>
+          <div><dt>Imagem completa</dt><dd id="size">—</dd></div>
+          <div><dt>Endereço de gravação</dt><dd>0x000000</dd></div>
+          <div><dt>Validação na placa</dt><dd class="pending">Pendente</dd></div></dl>
+        <details><summary>Conferir SHA-256</summary><code id="sha">Aguardando verificação.</code></details>
+        <a id="download" class="download" hidden download="DedSec-OS-CYD-2432S028.bin">Baixar o binário verificado ↓</a>
+        <p class="hint">Compilação e partições verificadas. Display, toque e estabilidade ainda precisam ser validados na placa física.</p>
+      </aside>
+    </section>
+
+    <section class="instructions" aria-labelledby="steps-title">
+      <div class="section-number">02 / NA PRÁTICA</div><h2 id="steps-title">Grave em quatro passos.</h2>
+      <ol class="steps">
+        <li><strong>Conecte a CYD</strong><p>Use a porta USB serial da placa e um cabo de dados. Aguarde o Windows reconhecer a porta.</p></li>
+        <li><strong>Escolha a porta</strong><p>Marque as confirmações acima, clique em <em>Conectar e instalar</em> e escolha a porta da CYD. Não selecione COM1 sem identificá-la.</p></li>
+        <li><strong>Confirme a instalação</strong><p>No diálogo, escolha <em>Install DedSec OS</em>. Na primeira instalação, após fazer backup, marque <em>Erase device</em> para começar com a flash limpa.</p></li>
+        <li><strong>Aguarde e reinicie</strong><p>Mantenha o cabo conectado até aparecer a conclusão. Aguarde o reinício; se necessário, pressione RST/EN uma vez. Confira o painel e o toque.</p></li>
+      </ol>
+    </section>
+
+    <section class="help" aria-labelledby="help-title">
+      <div class="section-number">03 / RESOLVER</div><h2 id="help-title">Se algo não conectar.</h2>
+      <details><summary>A porta USB não aparece</summary><p>Teste outro cabo de dados e outra porta USB, sem hub. Abra o Gerenciador de Dispositivos e compare antes/depois de conectar a CYD. Se houver dispositivo sem driver, identifique o chip USB serial da sua revisão e use o driver oficial correspondente: <a href="https://www.wch-ic.com/downloads/CH341SER_EXE.html">WCH CH340/CH341</a> ou <a href="https://www.silabs.com/developer-tools/usb-to-uart-bridge-vcp-drivers">Silicon Labs CP210x</a>. Não presuma o chip apenas pelo nome CYD.</p></details>
+      <details><summary>Falha ao conectar / Failed to initialize</summary><p>Feche Arduino IDE, PlatformIO e qualquer monitor serial. Tente novamente. Se sua placa tiver BOOT/FLASH e RST/EN: segure BOOT, pressione e solte RST, mantenha BOOT ao iniciar a conexão e solte quando a gravação começar. Não confunda BOOT com RST e não faça pontes em pinos sem confirmar a revisão.</p></details>
+      <details><summary>A gravação parou ou a tela ficou preta</summary><p>Não conclua que a placa foi perdida: o bootloader serial de fábrica permanece disponível. Reconecte, entre em BOOT se necessário e repita a gravação. Se a instalação terminar mas o display não responder, confirme se a revisão realmente usa ILI9341 e touch resistivo. Este pacote não serve para CYD-2USB, ST7789, touch capacitivo ou ESP32-S3.</p></details>
+      <details><summary>Quero fazer backup ou voltar ao Bruce</summary><p>Este webflasher instala e oferece o console serial; ele não faz backup completo da flash. Antes de substituir uma firmware que deseja preservar, siga os comandos de backup com esptool nas <a href="https://github.com/enzogabrielS/DedSec-OS-Bruce/blob/main/docs/dedsec/README.md#gravar">instruções do projeto</a>. Para voltar, use o <a href="https://bruce.computer/flasher">flasher oficial do Bruce</a> e selecione exatamente CYD-2432S028. Nenhuma gravação física foi realizada para validar esta versão.</p></details>
+    </section>
+  </main>
+  <footer class="wrap"><span>DEDSEC OS / BASE BRUCE</span><p>Use as ferramentas somente em equipamentos próprios ou ambientes autorizados.</p><a href="https://github.com/esphome/esp-web-tools">ESP Web Tools 10.4.0</a><span> · </span><a href="https://github.com/enzogabrielS/DedSec-OS-Bruce/blob/main/LICENSE">AGPL-3.0 / avisos</a></footer>
+</body>
+</html>

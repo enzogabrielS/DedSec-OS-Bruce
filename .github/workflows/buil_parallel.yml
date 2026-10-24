@@ -28,6 +28,8 @@ on:
 
 jobs:
   compile_sketch:
+    # Forks use their own target workflow; the full upstream matrix remains available manually.
+    if: github.repository == 'BruceDevices/firmware' || github.event_name == 'workflow_dispatch'
     name: Build ${{ matrix.board.env }}
     runs-on: ubuntu-latest
     strategy:

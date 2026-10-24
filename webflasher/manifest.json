@@ -1,0 +1,17 @@
+{
+  "name": "DedSec OS — CYD ESP32-2432S028",
+  "version": "2026.10.24+6de6ad3f",
+  "new_install_prompt_erase": true,
+  "new_install_improv_wait_time": 0,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        {
+          "path": "firmware/DedSec-OS-CYD-2432S028.bin",
+          "offset": 0
+        }
+      ]
+    }
+  ]
+}

@@ -55,3 +55,20 @@ Dependencias e caches gerados automaticamente:
 .venv/
 .pio-core/
 .pio/
+
+Webflasher (adicionado apos a entrega da firmware):
+.github/workflows/buil_parallel.yml (matriz automatica restrita ao upstream; manual preservada)
+.github/workflows/dedsec-webflasher.yml
+README.md
+docs/dedsec/README.md
+docs/dedsec/WEBFLASHER.md
+tools/dedsec/prepare_webflasher.py
+tools/dedsec/test_webflasher.mjs
+webflasher/.nojekyll
+webflasher/index.html
+webflasher/styles.css
+webflasher/app.mjs
+webflasher/integrity.mjs
+webflasher/manifest.json
+webflasher/release.json
+webflasher/firmware/DedSec-OS-CYD-2432S028.bin

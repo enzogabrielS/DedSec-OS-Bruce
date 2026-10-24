@@ -5,6 +5,7 @@ para a CYD padrão, com tema DedSec, dashboard de estado e diagnóstico,
 preservando a arquitetura, os drivers e as ferramentas compatíveis da base.
 
 - [Compilação, instalação e recuperação](docs/dedsec/README.md)
+- [Webflasher USB — instalar pelo navegador](https://enzogabrielS.github.io/DedSec-OS-Bruce/)
 - [Relatório de validação e limitações](docs/dedsec/VALIDACAO.md)
 - [Auditoria da placa e da arquitetura](docs/dedsec/AUDITORIA.md)
 

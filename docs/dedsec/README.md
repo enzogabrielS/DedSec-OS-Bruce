@@ -41,6 +41,32 @@ compilação malsucedida ou uma imagem rejeitada não é candidata a gravação.
 
 ## Gravar
 
+### Pelo navegador (webflasher)
+
+Abra [DedSec OS Webflasher](https://enzogabrielS.github.io/DedSec-OS-Bruce/)
+no Chrome ou Edge do computador. Conecte a CYD com cabo USB de dados, feche
+monitores seriais e retire módulos externos. Confirme o modelo exato e a
+substituição da firmware; clique em **Conectar e instalar**, escolha a porta da
+CYD e use **Install DedSec OS** no diálogo. Na primeira instalação, faça backup
+antes e selecione **Erase device** para limpar dados antigos. Essa opção apaga
+toda a flash, incluindo configurações e arquivos internos. O cartão SD não é
+apagado, mas retire-o se deseja evitar que configurações antigas sejam lidas.
+
+A página confere tamanho, cabeçalhos e SHA-256; o instalador recebe os mesmos
+bytes verificados por uma URL Blob local. O manifesto aceita apenas o ESP32
+clássico e a imagem completa no endereço 0x0. O chip não identifica o modelo do
+display, a revisão da CYD nem a capacidade de flash: confira sua placa antes.
+O webflasher não faz backup da flash nem valida o funcionamento físico.
+ESP Web Tools 10.4.0 é carregado do unpkg; é preciso conexão à Internet.
+
+Mantenha o cabo conectado até a conclusão e aguarde reiniciar. Se necessário,
+pressione RST/EN. Se não conectar e houver os botões correspondentes na placa,
+segure BOOT/FLASH, pressione e solte RST/EN e mantenha BOOT durante a conexão;
+solte-o ao iniciar a gravação. Se não aparecer porta, teste outro cabo de dados
+e confira o chip USB serial e o driver no Gerenciador de Dispositivos.
+
+### Pelo PlatformIO / esptool (backup e gravação manual)
+
 Identifique a porta USB serial da CYD com `platformio device list`. `COMx` abaixo
 é um marcador; não escolha automaticamente COM1. Feche monitores seriais antes
 da gravação. Confirme a revisão da placa e a flash instalada.

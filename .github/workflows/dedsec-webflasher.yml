@@ -1,0 +1,53 @@
+name: DedSec Webflasher
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'webflasher/**'
+      - 'tools/dedsec/prepare_webflasher.py'
+      - 'tools/dedsec/verify_image.py'
+      - 'tools/dedsec/test_webflasher.mjs'
+      - 'docs/dedsec/DedSec-CYD-2432S028-image.json'
+      - '.github/workflows/dedsec-webflasher.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dedsec-pages
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check packaged firmware, manifest and partition bounds
+        run: python tools/dedsec/prepare_webflasher.py --check
+      - name: Test browser integrity checks
+        run: node --test tools/dedsec/test_webflasher.mjs
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: webflasher
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy verified installer
+        id: deployment
+        uses: actions/deploy-pages@v4
