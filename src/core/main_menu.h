@@ -2,9 +2,6 @@
 #define __MAIN_MENU_H__
 
 #include <MenuItemInterface.h>
-#ifdef DEDSEC_OS
-#include "menu_items/DedSecMenu.h"
-#endif
 
 #include "menu_items/BleMenu.h"
 #include "menu_items/ClockMenu.h"
@@ -24,9 +21,6 @@
 #include "menu_items/WifiMenu.h"
 class MainMenu {
 public:
-#ifdef DEDSEC_OS
-    DedSecMenu dedsecMenu;
-#endif
     FileMenu fileMenu;
     BleMenu bleMenu;
     ClockMenu clockMenu;

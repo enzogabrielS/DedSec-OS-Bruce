@@ -47,7 +47,7 @@ const char *bluetoothState() {
     }
 }
 
-bool confirm(const char *effect, const char *action = "Alvo proprio/autorizado") {
+bool confirm(const char *effect, const char *action) {
     bool accepted = false;
     std::vector<Option> choices = {
         {"Cancelar", []() {}},
@@ -56,6 +56,36 @@ bool confirm(const char *effect, const char *action = "Alvo proprio/autorizado")
     // Cancel is the default; a held press is filtered by Bruce's loopOptions.
     loopOptions(choices, MENU_TYPE_SUBMENU, effect);
     return accepted;
+}
+
+void drawBootMark(int cx, int cy, unsigned frame) {
+    const int offset = frame == 2 ? 4 : (frame == 3 ? -3 : 0);
+    cx += offset;
+    // Original geometric skull: built from TFT primitives, no image decoder,
+    // sprite or framebuffer. Crossed eyes and a compact jaw stay legible.
+    tft.drawFastVLine(cx - 40, cy - 22, 48, DedSec::Muted);
+    tft.drawFastHLine(cx - 40, cy - 22, 10, DedSec::Muted);
+    tft.drawFastHLine(cx - 40, cy + 25, 10, DedSec::Muted);
+    tft.drawFastVLine(cx + 39, cy - 22, 48, DedSec::Muted);
+    tft.drawFastHLine(cx + 30, cy - 22, 10, DedSec::Muted);
+    tft.drawFastHLine(cx + 30, cy + 25, 10, DedSec::Muted);
+    if (frame == 0) return;
+    tft.fillRoundRect(cx - 25, cy - 25, 50, 40, 12, DedSec::Text);
+    tft.fillRect(cx - 16, cy + 8, 32, 21, DedSec::Text);
+    for (int eye : {-12, 12}) {
+        for (int width = 0; width < 2; ++width) {
+            tft.drawLine(cx + eye - 5, cy - 10 + width, cx + eye + 5, cy + width, DedSec::Background);
+            tft.drawLine(cx + eye - 5, cy + width, cx + eye + 5, cy - 10 + width, DedSec::Background);
+        }
+    }
+    tft.fillTriangle(cx, cy + 3, cx - 4, cy + 10, cx + 4, cy + 10, DedSec::Background);
+    for (int tooth = -9; tooth <= 9; tooth += 9) {
+        tft.fillRect(cx + tooth - 1, cy + 19, 3, 10, DedSec::Background);
+    }
+    if (frame == 2 || frame == 3) {
+        tft.fillRect(cx - 26, cy + 3, 52, 3, DedSec::Background);
+        tft.drawFastHLine(cx - 35, cy - 15, 67, DedSec::Muted);
+    }
 }
 
 // SSIDs are untrusted bytes. Keep control characters out of the UI/serial report.
@@ -108,6 +138,54 @@ void dedsecBootStage(const char *stage, unsigned step) {
     for (unsigned i = 0; i < 4; ++i) {
         tft.fillRect(20 + i * 32, 155, 24, 3, i < step ? DedSec::Accent : DedSec::Divider);
     }
+}
+
+bool dedsecBootAnimationTick() {
+    static bool finished = false;
+    static bool started = false;
+    static uint32_t began = 0;
+    static unsigned previousFrame = ~0U;
+    if (finished) return false;
+    if (bruceConfig.instantBoot || !bruceConfig.startupApp.isEmpty()) {
+        finished = true;
+        return false;
+    }
+    if (!started) {
+        started = true;
+        began = millis();
+        tft.fillScreen(DedSec::Background);
+        tft.setTextFont(1);
+        tft.setTextDatum(TL_DATUM);
+        tft.setTextSize(1);
+        tft.setTextColor(DedSec::Muted, DedSec::Background);
+        tft.drawCentreString("CYD / BRUCE CORE", tftWidth / 2, 16, 1);
+        tft.drawCentreString("TOQUE PARA PULAR", tftWidth / 2, tftHeight - 12, 1);
+    }
+    const uint32_t elapsed = millis() - began;
+    // Scheduled by loop(), never a delay sequence or another FreeRTOS task.
+    if (elapsed >= 720 || (elapsed >= 120 && check(AnyKeyPress))) {
+        finished = true;
+        tft.setTextSize(1);
+        return false;
+    }
+    const unsigned frame = elapsed / 60;
+    if (frame != previousFrame) {
+        previousFrame = frame;
+        const int cy = tftHeight / 2 - 25;
+        tft.fillRect(tftWidth / 2 - 48, cy - 29, 96, 63, DedSec::Background);
+        drawBootMark(tftWidth / 2, cy, frame);
+        tft.fillRect(10, cy + 42, tftWidth - 20, 28, DedSec::Background);
+        tft.setTextColor(DedSec::Text, DedSec::Background);
+        tft.setTextSize(3);
+        const char *title = frame < 2 ? "DED___ OS" : "DEDSEC OS";
+        tft.drawCentreString(title, tftWidth / 2 + (frame == 3 ? 3 : 0), cy + 42, 1);
+        tft.setTextSize(1);
+        tft.setTextColor(DedSec::Muted, DedSec::Background);
+        tft.drawCentreString("INICIALIZADO", tftWidth / 2, cy + 77, 1);
+        tft.fillRect(20, tftHeight - 29, tftWidth - 40, 2, DedSec::Divider);
+        tft.fillRect(20, tftHeight - 29, (tftWidth - 40) * (frame + 1) / 12, 2, DedSec::Text);
+    }
+    return true;
 }
 
 void dedsecDashboard() {
@@ -367,11 +445,11 @@ void dedsecSettings() {
     int selected = 0;
     do {
         std::vector<Option> items = {
-            {bruceConfig.instantBoot ? "Boot reduzido: ON" : "Boot reduzido: OFF", []() {
+            {bruceConfig.instantBoot ? "Animacao boot: OFF" : "Animacao boot: ON", []() {
                 bruceConfig.instantBoot = !bruceConfig.instantBoot;
                 bruceConfig.saveFile();
             }},
-            {"Restaurar paleta DedSec", []() {
+            {"Preto e branco", []() {
                 if (bruceConfig.priColor == DedSec::Accent && bruceConfig.secColor == DedSec::Muted &&
                     bruceConfig.bgColor == DedSec::Background && bruceConfig.themePath.isEmpty()) return;
                 bruceConfig.removeTheme();
@@ -407,55 +485,10 @@ bool dedsecConfirmMenuOperation(const String &label, bool hardwareEntry) {
         }
         return true;
     }
-    // Confirm the entry into active tools; their original implementations stay intact.
-    struct Effect { const char *label; const char *description; };
-    static constexpr Effect effects[] = {
-        {"Wifi Atks", "Transmite/injeta quadros WiFi"},
-        {"Evil Portal", "Cria AP e portal de laboratorio"},
-        {"NetCut", "Pode interromper conectividade"},
-        {"ARP", "Envia pacotes ARP na rede"},
-        {"Responder", "Responde nomes/servicos na rede"},
-        {"Brucegotchi", "Pode transmitir quadros WiFi"},
-        {"WiFi Pass Recovery", "Testa autenticacao WiFi"},
-        {"BLE Spam", "Anuncios BLE / pode desligar WiFi"},
-        {"BLE Suite", "Testes BLE / pode desligar WiFi"},
-        {"Ninebot", "Pode enviar comandos BLE"},
-        {"Bad BLE", "Envia comandos de teclado BLE"},
-        {"BadUSB & HID", "EXT CH9329 / envia teclas USB"},
-        {"BadUSB", "Executa teclas via CH9329 externo"},
-        {"USB Keyboard", "Envia teclas via CH9329 externo"},
-        {"iBeacon", "Transmite beacon BLE"},
-        {"Media Cmds", "Envia controles de midia BLE"},
-        {"BLE Keyboard", "Envia teclas por BLE"},
-        {"Presenter mode", "Envia controles por BLE"},
-        {"Scan Hosts", "Envia sondas aos hosts/portas"},
-        {"DHCP Starvation", "Pode esgotar concessoes DHCP"},
-        {"MAC Flooding", "Inunda tabela MAC do switch"},
-        {"Karma Attack", "Cria APs e responde a sondas"},
-        {"Beacon SPAM", "Transmite beacons WiFi repetidos"},
-        {"Deauth Flood", "Pode desconectar clientes WiFi"},
-        {"Enhanced Deauth", "Pode desconectar clientes WiFi"},
-        {"Deauth", "Pode desconectar cliente WiFi"},
-        {"TV-B-Gone", "Envia comandos IR de desligar"},
-        {"Custom IR", "Transmite comandos infravermelhos"},
-        {"IR Jammer", "Pode interferir na recepcao IR"},
-        {"Erase data", "Apaga dados da tag selecionada"},
-        {"Write NDEF", "Grava dados na tag selecionada"},
-        {"Emulate NDEF", "Ativa emulacao de tag NFC"},
-        {"Jammer", "Pode interromper comunicacao RF"},
-        {"NRF Jammer", "Pode interromper radio 2.4 GHz"},
-        {"MouseJack", "Pode injetar comandos em receptor"},
-        {"Bruteforce", "Transmite tentativas de codigos RF"},
-        {"Custom SubGhz", "Transmite sinal RF configurado"},
-        {"Client TCP", "Abre conexao TCP com alvo"},
-        {"TelNET", "Abre sessao remota Telnet"},
-        {"SSH", "Abre sessao remota SSH"}
-    };
+    // Resource transitions only. Tool callbacks and target selection follow
+    // Bruce directly, without intercepting generic menu labels.
     if (label == "BLE radio switch") return confirm("Reinicia BLE; desliga WiFi/WebUI", "Continuar");
     if (label == "BLE radio reset") return confirm("Reinicia BLE e suas conexoes", "Encerrar e continuar");
-    for (const auto &entry : effects) {
-        if (label == entry.label) return confirm(entry.description);
-    }
     return true;
 }
 #endif

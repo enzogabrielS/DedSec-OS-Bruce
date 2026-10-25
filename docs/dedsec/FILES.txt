@@ -11,6 +11,7 @@ src/core/main_menu.cpp
 src/core/main_menu.h
 src/core/menu_items/ConfigMenu.cpp
 src/core/menu_items/FMMenu.cpp
+src/core/menu_items/WifiMenu.cpp
 src/core/scrollableTextArea.cpp
 src/core/settings.cpp
 src/core/theme.cpp
@@ -36,8 +37,6 @@ docs/dedsec/phase2-image.json
 docs/dedsec/phase3-image.json
 docs/dedsec/phase4-image.json
 src/core/dedsec_palette.h
-src/core/menu_items/DedSecMenu.cpp
-src/core/menu_items/DedSecMenu.h
 src/modules/others/dedsec.cpp
 src/modules/others/dedsec.h
 tools/dedsec/build.ps1
@@ -72,3 +71,10 @@ webflasher/integrity.mjs
 webflasher/manifest.json
 webflasher/release.json
 webflasher/firmware/DedSec-OS-CYD-2432S028.bin
+
+Revisao preto e branco:
+src/core/menu_items/DedSecMenu.cpp e .h removidos (aba System)
+docs/dedsec/MONOCROMO.md
+docs/dedsec/release-2026.10.24-6de6ad3f.json (hashes da primeira imagem)
+docs/dedsec/monochrome-phase1-image.json
+docs/dedsec/monochrome-build-evidence.zip

@@ -1,4 +1,8 @@
-# Relatório de entrega — DedSec OS / CYD-2432S028
+# Relatório da entrega inicial — DedSec OS / CYD-2432S028
+
+Registro histórico da primeira imagem, anterior à revisão preto e branco.
+O relatório e os tamanhos atuais estão em [MONOCROMO.md](MONOCROMO.md).
+O JSON dessa imagem inicial foi preservado em `release-2026.10.24-6de6ad3f.json`.
 
 Data: 24/10/2026. Código e imagens compilados; validação física pendente.
 Projeto local: `C:\Users\enzog\Documents\New project\dedsec-os`.

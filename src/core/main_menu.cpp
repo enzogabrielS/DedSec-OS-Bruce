@@ -9,9 +9,6 @@
 
 MainMenu::MainMenu() {
     _menuItems = {
-#ifdef DEDSEC_OS
-        &dedsecMenu,
-#endif
         &wifiMenu,
         &bleMenu,
         &rfMenu,

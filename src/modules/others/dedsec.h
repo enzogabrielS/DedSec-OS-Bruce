@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 void dedsecBootStage(const char *stage, unsigned step);
+bool dedsecBootAnimationTick();
 void dedsecDashboard();
 void dedsecWifiSurvey();
 void dedsecSaveDiagnostic();

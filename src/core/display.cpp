@@ -1,7 +1,6 @@
 #include "display.h"
 #ifdef DEDSEC_OS
 #include "core/dedsec_palette.h"
-#include "modules/others/dedsec.h"
 #endif
 #include "core/wifi/webInterface.h" // for server
 #include "core/wifi/wg.h"           //for isConnectedWireguard to print wireguard lock
@@ -329,7 +328,7 @@ int8_t displayMessage(
 
 void displayError(const String &txt, bool waitKeyPress) {
 #ifdef DEDSEC_OS
-    displayRedStripe(txt, DedSec::Text, DedSec::Accent);
+    displayRedStripe(txt, DedSec::Background, DedSec::Text);
 #else
     displayRedStripe(txt);
 #endif
@@ -761,12 +760,6 @@ int loopOptions(
             }
             if (chosen >= options.size() || !options[chosen].enabled) continue;
 #ifdef DEDSEC_OS
-            if (!dedsecConfirmMenuOperation(options[chosen].label)) {
-                redraw = true;
-                firstRender = true;
-                drawMainBorder();
-                continue;
-            }
             // Immediate press feedback without an extra animation/wait.
             tft.drawFastHLine(6, 25, tftWidth - 12, DedSec::Text);
 #endif

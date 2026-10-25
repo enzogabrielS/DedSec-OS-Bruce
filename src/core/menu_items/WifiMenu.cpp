@@ -1,5 +1,8 @@
 #include "WifiMenu.h"
 #include "core/display.h"
+#ifdef DEDSEC_OS
+#include "modules/others/dedsec.h"
+#endif
 #include "core/settings.h"
 #include "core/utils.h"
 #include "core/wifi/webInterface.h"
@@ -59,6 +62,9 @@ void WifiMenu::optionsMenu() {
     if (WiFi.getMode() & WIFI_MODE_STA && WiFi.isConnected()) {
         options.push_back({"AP info", displayAPInfo});
     }
+#ifdef DEDSEC_OS
+    options.push_back({"WiFi survey", dedsecWifiSurvey});
+#endif
     options.push_back({"Wifi Atks", wifi_atk_menu});
     options.push_back({"Evil Portal", [=]() {
                            // WebUI cleanup now handled automatically inside EvilPortal constructor

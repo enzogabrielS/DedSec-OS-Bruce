@@ -618,10 +618,9 @@ void loop() {
     }
 #endif
 #ifdef DEDSEC_OS
-    static bool dashboardAtStartup = true;
-    if (dashboardAtStartup) {
-        dashboardAtStartup = false;
-        if (bruceConfig.startupApp.isEmpty()) dedsecDashboard();
+    if (dedsecBootAnimationTick()) {
+        vTaskDelay(pdMS_TO_TICKS(8));
+        return;
     }
 #endif
     tft.fillScreen(bruceConfig.bgColor);

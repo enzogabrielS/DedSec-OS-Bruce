@@ -1,14 +1,14 @@
 {
-  "version": "2026.10.24+6de6ad3f",
+  "version": "2026.10.24-bw.1",
   "board": "CYD ESP32-2432S028 padrão / ILI9341 resistiva / 4 MiB",
   "validation": {
     "environment": "DedSec-CYD-2432S028",
-    "application_bytes": 3599680,
+    "application_bytes": 3598624,
     "application_partition_bytes": 3932160,
-    "application_free_bytes": 332480,
-    "merged_bytes": 3665216,
-    "application_sha256": "0d54e0e40df76799ba6c85391bc7cc169f7c49d0f870bc7f01e13d6ce910defb",
-    "merged_sha256": "aed760b6101061b536434a90efddd714e6e143b072b06cdad1a57735ec9f71f9",
+    "application_free_bytes": 333536,
+    "merged_bytes": 3664160,
+    "application_sha256": "372ef0107bbfec4d2711a91d1b3556189534dfb04e8970e8939b4579e76e981d",
+    "merged_sha256": "1ba00fef0163e264bc34a6786b9d9889044c186b9b0e1b17834e7d4182650b57",
     "physical_tests": "not performed"
   }
 }

@@ -52,6 +52,10 @@ antes e selecione **Erase device** para limpar dados antigos. Essa opção apaga
 toda a flash, incluindo configurações e arquivos internos. O cartão SD não é
 apagado, mas retire-o se deseja evitar que configurações antigas sejam lidas.
 
+Na atualização de uma DedSec anterior, desmarcar `Erase device` preserva o
+LittleFS, incluindo `/bruce.conf`, pois a imagem termina antes dessa partição.
+A imagem completa ainda regrava o prefixo da flash, incluindo a região NVS.
+
 A página confere tamanho, cabeçalhos e SHA-256; o instalador recebe os mesmos
 bytes verificados por uma URL Blob local. O manifesto aceita apenas o ESP32
 clássico e a imagem completa no endereço 0x0. O chip não identifica o modelo do
@@ -97,22 +101,24 @@ factory ocupa 3,75 MiB e não há segundo slot OTA; use a conexão serial.
 
 ## Uso
 
-* O painel inicial mostra modelo, Wi-Fi, IP, RSSI, estado do controlador BLE,
+* O menu principal do Bruce abre depois da animação DedSec de até 720 ms.
+  Toque para pular; desative em `Config > Display & UI > DedSec UI`.
+  O painel em `Config > Live dashboard` mostra modelo, Wi-Fi, IP, RSSI, controlador BLE,
   último estado de montagem SD, heap interno livre, maior bloco e estado do FS/config.
-  Toque para ir ao menu original; volte por `System > Live dashboard`.
-* `System > WiFi survey`: busca passiva sem associação a APs, até 24 registros;
+  Toque para voltar ao menu. A aba adicional System foi removida.
+* `WiFi > WiFi survey`: busca passiva sem associação a APs, até 24 registros;
   SSID, BSSID, canal, RSSI e autenticação. ESC cancela. O modo Wi-Fi anterior
   é restaurado; a lista temporária é liberada.
-* `System > BLE discovery`: descoberta BLE reutiliza `ble_common`. Não é uma
+* `Bluetooth > BLE Scan`: descoberta BLE reutiliza `ble_common`. Não é uma
   busca de dispositivos Bluetooth Classic. A troca de rádio em placa sem PSRAM
   pode desconectar Wi-Fi e encerrar WebUI, com confirmação na descoberta.
   A busca é passiva, dura até cinco segundos e mantém no máximo 24 anúncios;
   ESC cancela. O controlador é encerrado antes de navegar pelos resultados copiados.
-* `System > Save diagnostic`: salva snapshot textual em `/dedsec/` no SD
+* `Config > Save diagnostic`: salva snapshot textual em `/dedsec/` no SD
   montado ou no LittleFS; mostra erro real de abertura/escrita/rename.
   Os arquivos podem ser lidos e exportados pelo Files/WebUI original.
-* `System > Hardware / expansion`: requisitos e conflitos dos módulos externos.
-* `System > DedSec settings`: boot reduzido e restauração da paleta. Brilho,
+* `Config > Hardware / expansion`: requisitos e conflitos dos módulos externos.
+* `Config > Display & UI > DedSec UI`: animação de boot e paleta preto e branco. Brilho,
   temas, orientação e conectividade continuam no Config original.
 * Configuração usa `/bruce.conf` e o JSON original. No perfil DedSec o arquivo
   interno tem prioridade sobre o espelho SD; gravação temporária + rename evita
@@ -120,14 +126,16 @@ factory ocupa 3,75 MiB e não há segundo slot OTA; use a conexão serial.
   aparecem na serial e no painel. Não se grava durante o refresh do painel.
   JSON com raiz inválida, erro de leitura ou mais de 32 KiB mantém os defaults
   e sinaliza erro. Cores inválidas são rejeitadas sem passar ponteiros nulos a strtoul.
-* Ao reutilizar um cartão/configuração Bruce anterior, as cores salvas são
-  respeitadas. Selecione `Restaurar paleta DedSec` para aplicar a nova paleta.
+* A paleta padrão é preto, branco e cinzas. A paleta vermelha padrão da versão
+  DedSec anterior migra uma vez para branco. Temas/paletas personalizados são
+  respeitados; selecione `Preto e branco` em DedSec UI para restaurar o padrão.
 * PREV/SEL/NEXT e a zona ESC seguem o mapa de toque do Bruce. ESC fica no
   terço superior esquerdo; SEL no centro. Não há uma segunda pilha gráfica.
 
-Ferramentas ativas herdadas exigem atenção ao efeito mostrado antes de entrar
-na ferramenta. As confirmações da interface não constituem um sandbox de
-segurança: CLI, scripts e APIs originais continuam disponíveis. Use apenas
+As ferramentas herdadas usam o fluxo original do Bruce, incluindo seus
+seletores de rede/dispositivo quando disponíveis. A confirmação extra
+`Alvo proprio/autorizado` foi removida. Permanecem as confirmações de hardware,
+troca de rádio e as operações destrutivas que já pertenciam ao Bruce. Use apenas
 alvos próprios/autorizados. Nenhuma ferramenta ofensiva nova foi acrescentada.
 
 ## Expansão

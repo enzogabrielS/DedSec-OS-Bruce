@@ -8,8 +8,8 @@ constexpr uint16_t Surface = 0x10A2;
 constexpr uint16_t Divider = 0x3186;
 constexpr uint16_t Text = 0xFFFF;
 constexpr uint16_t Muted = 0xBDF7;
-constexpr uint16_t Accent = 0xF906;
-constexpr uint16_t Success = 0x6D6B;
+constexpr uint16_t Accent = Text;
+constexpr uint16_t Success = Text;
 constexpr unsigned RefreshMs = 1000;
 constexpr unsigned MaxNetworks = 24;
 }

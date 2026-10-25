@@ -29,6 +29,9 @@ JsonDocument BruceConfig::toJson() const {
     setting["soundVolume"] = soundVolume;
     setting["wifiAtStartup"] = wifiAtStartup;
     setting["instantBoot"] = instantBoot;
+#ifdef DEDSEC_OS
+    setting["dedsecUiRevision"] = 1;
+#endif
     setting["keyboardLang"] = keyboardLang;
 
 #ifdef HAS_RGB_LED
@@ -195,6 +198,17 @@ void BruceConfig::fromFile(bool checkFS) {
         count++;
         log_e("Fail");
     }
+#ifdef DEDSEC_OS
+    if (!setting["dedsecUiRevision"].is<int>() || setting["dedsecUiRevision"].as<int>() < 1) {
+        // Migrate only the previous DedSec default. Keep explicitly chosen
+        // palettes/theme files, and persist the migration once with this load.
+        if (themePath.isEmpty() && priColor == 0xF906 && secColor == DedSec::Muted && bgColor == 0) {
+            priColor = DedSec::Accent;
+            secColor = DedSec::Muted;
+        }
+        ++count;
+    }
+#endif
     if (!setting["themeOnSd"].isNull()) {
         theme.fs = setting["themeOnSd"].as<int>();
     } else {

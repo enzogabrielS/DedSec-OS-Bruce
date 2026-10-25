@@ -28,6 +28,11 @@ void ConfigMenu::optionsMenu() {
 
         std::vector<Option> localOptions = {
             {"Display & UI",  [this]() { displayUIMenu(); }},
+#ifdef DEDSEC_OS
+            {"Live dashboard", dedsecDashboard},
+            {"Save diagnostic", dedsecSaveDiagnostic},
+            {"Hardware / expansion", dedsecHardwareInfo},
+#endif
 #ifdef HAS_RGB_LED
             {"LED Config",    [this]() { ledMenu(); }      },
 #endif
