@@ -114,4 +114,3 @@ Mais 12 originais, 12 prévias, metadados e registro de prompts em
 `media/dedsec/`. Pacote/binário, manifesto e versão em `webflasher/`.
 Documentação, relatório JSON e logs em `docs/dedsec/`.
 Inventário acumulado em [FILES.txt](FILES.txt).
-
