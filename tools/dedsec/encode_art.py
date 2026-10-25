@@ -65,7 +65,7 @@ def generate(check: bool = False) -> None:
             preview.putdata([value * 85 for value in levels])
             (directory / "preview").mkdir(parents=True, exist_ok=True)
             preview.save(directory / "preview" / filename, optimize=True)
-    outputs = {ROOT / "src/core/dedsec_art_data.inc": "\n".join(lines) + "\n",
+    outputs = {ROOT / "src/core/dedsec_art_data.inc": "\n".join(lines).rstrip() + "\n",
                directory / "assets.json": json.dumps(metadata, indent=2) + "\n"}
     for path, value in outputs.items():
         if check:
