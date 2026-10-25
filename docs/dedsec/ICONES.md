@@ -1,5 +1,8 @@
 # Ícones aprovados — 2026.10.24-bw.3
 
+Registro histórico desta revisão. Fundo e duração de boot da versão seguinte
+estão em [FUNDO.md](FUNDO.md).
+
 Os 12 símbolos aprovados pelo usuário foram incorporados aos menus existentes
 do Bruce para `DedSec-CYD-2432S028`.
 

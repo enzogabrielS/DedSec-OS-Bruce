@@ -120,3 +120,20 @@ media/dedsec/preview/ (mais 12 previas de 2 bits)
 docs/dedsec/ICONES.md
 docs/dedsec/release-2026.10.24-bw.2.json
 docs/dedsec/approved-icons-build-evidence.zip
+
+Fundo alternativo e duracao de boot:
+include/MenuItemInterface.h
+src/core/config.h e config.cpp
+src/core/dedsec_art.h e dedsec_art.cpp
+src/core/dedsec_art_data.inc
+src/modules/others/dedsec.cpp
+tools/dedsec/encode_art.py e check_art_image.py
+tools/dedsec/test_art.py
+media/dedsec/source/wallpaper.jpg
+media/dedsec/preview/wallpaper.png
+media/dedsec/assets.json e README.md
+docs/dedsec/FUNDO.md
+docs/dedsec/release-2026.10.24-bw.3.json
+docs/dedsec/wallpaper-build-evidence.zip
+webflasher/firmware/DedSec-OS-CYD-2432S028.bin
+webflasher/manifest.json e release.json

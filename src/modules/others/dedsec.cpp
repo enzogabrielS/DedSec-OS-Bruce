@@ -140,15 +140,17 @@ bool dedsecBootAnimationTick() {
     }
     const uint32_t elapsed = millis() - began;
     // Scheduled by loop(), never a delay sequence or another FreeRTOS task.
-    if (elapsed >= 720 || (elapsed >= 120 && check(AnyKeyPress))) {
+    const uint32_t duration = static_cast<uint32_t>(bruceConfig.dedsecBootDuration);
+    if (elapsed >= duration || (elapsed >= 120 && check(AnyKeyPress))) {
         finished = true;
         tft.setTextSize(1);
         return false;
     }
-    const unsigned frame = elapsed / 60;
+    // Repeat short glitches, then hold a clean logo during the final 400 ms.
+    const unsigned frame = elapsed + 400 >= duration ? 0 : (elapsed / 80) % 12;
     if (frame != previousFrame) {
         previousFrame = frame;
-        if (frame <= 8) drawBootLogo(frame, false);
+        drawBootLogo(frame, false);
     }
     return true;
 }
@@ -414,6 +416,16 @@ void dedsecSettings() {
                 bruceConfig.instantBoot = !bruceConfig.instantBoot;
                 bruceConfig.saveFile();
             }},
+            {"Duracao boot: " + String(bruceConfig.dedsecBootDuration / 1000) + " s", []() {
+                const int current = bruceConfig.dedsecBootDuration;
+                bruceConfig.dedsecBootDuration = current == 4000 ? 7000 : (current == 7000 ? 1000 : 4000);
+                bruceConfig.saveFile();
+            }},
+            {bruceConfig.dedsecWallpaper ? "Fundo: imagem DedSec" :
+                (bruceConfig.bgColor == 0 ? "Fundo: preto" : "Fundo: cor do tema"), []() {
+                bruceConfig.dedsecWallpaper = !bruceConfig.dedsecWallpaper;
+                bruceConfig.saveFile();
+            }},
             {"Preto e branco", []() {
                 if (bruceConfig.priColor == DedSec::Accent && bruceConfig.secColor == DedSec::Muted &&
                     bruceConfig.bgColor == DedSec::Background && bruceConfig.themePath.isEmpty()) return;
@@ -426,7 +438,7 @@ void dedsecSettings() {
         };
         selected = loopOptions(items, MENU_TYPE_SUBMENU, "DEDSEC / UI", selected);
         if (!bruceConfig.configStorageOk) displayError("Config nao salva; veja serial", true);
-    } while (!returnToMenu && selected >= 0 && selected < 2);
+    } while (!returnToMenu && selected >= 0 && selected < 4);
 }
 
 const char *dedsecHardwareRequirement(const String &name) {

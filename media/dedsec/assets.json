@@ -174,5 +174,17 @@
     "gamma": 0.75,
     "source_sha256": "a1d9ecbda27cafca47c0e90020005e23d05b3c4b451bdc3631113f16d488fe41",
     "packed_sha256": "9e03f3987afed36a0af16069f1e143cd94967727504e1e1b3ed0250ec6304396"
+  },
+  {
+    "name": "Wallpaper",
+    "source": "source/wallpaper.jpg",
+    "width": 320,
+    "height": 240,
+    "bits_per_pixel": 4,
+    "flash_bytes": 38400,
+    "gamma": 1.0,
+    "source_sha256": "75d2d6335b11852b48f6da9047e0d2c83110f8c74172053acddc571a6c5c472e",
+    "packed_sha256": "5bd4b7b0ff896377862bde47c655cd040876ee304d0dec382c8ba73be99e1d23",
+    "max_luminance": 48
   }
 ]

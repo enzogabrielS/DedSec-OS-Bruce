@@ -26,6 +26,22 @@ class PackedArtTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             unpack(b"", 5, 2)
 
+    def test_wallpaper_nibbles_and_row_padding(self):
+        values = [0, 7, 15, 4, 8, 12]
+        self.assertEqual(pack(values, 3, 2, 4), b"\x07\xf0\x48\xc0")
+        self.assertEqual(unpack(b"\x07\xf0\x48\xc0", 3, 2, 4), values)
+
+    def test_wallpaper_full_size_round_trip(self):
+        values = [(x + y) % 16 for y in range(240) for x in range(320)]
+        packed = pack(values, 320, 240, 4)
+        self.assertEqual(len(packed), 38400)
+        self.assertEqual(unpack(packed, 320, 240, 4), values)
+        for bits in (0, 3, 8):
+            with self.assertRaises(ValueError):
+                pack([0], 1, 1, bits)
+            with self.assertRaises(ValueError):
+                unpack(b"\x00", 1, 1, bits)
+
 
 if __name__ == "__main__":
     unittest.main()

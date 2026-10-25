@@ -9,7 +9,8 @@ preservando a arquitetura, os drivers e as ferramentas compatíveis da base.
 - [Relatório de validação e limitações](docs/dedsec/VALIDACAO.md)
 - [Revisão preto e branco, animação e menus](docs/dedsec/MONOCROMO.md)
 - [Logo e símbolos dos anexos na firmware](docs/dedsec/ARTES.md)
-- [12 ícones aprovados e validação da revisão atual](docs/dedsec/ICONES.md)
+- [12 ícones aprovados e validação](docs/dedsec/ICONES.md)
+- [Fundo alternativo e duração da animação de boot](docs/dedsec/FUNDO.md)
 - [Auditoria da placa e da arquitetura](docs/dedsec/AUDITORIA.md)
 
 Ambiente PlatformIO: `DedSec-CYD-2432S028`. Compilação validada;

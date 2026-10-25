@@ -18,20 +18,31 @@ Os originais aprovados também são preservados. Categorias, ferramenta e
 prompts estão registrados em `generated-icons.json`. A representação gráfica
 de um periférico não indica que esse hardware esteja presente na CYD.
 
+`source/wallpaper.jpg` é a imagem adicional fornecida pelo usuário para o
+fundo do menu. O JPEG original é preservado; a conversão aplica recorte
+central para preencher 320 × 240, sem esticar a composição.
+
 `tools/dedsec/encode_art.py` reduz as imagens com Lanczos e uma curva de
 luminância fixa para preservar legibilidade, quantiza para quatro tons e
 empacota quatro pixels por byte, da esquerda para a direita (bits altos
 primeiro). Cada linha recebe preenchimento independente. As proporções e a
 composição dos originais são mantidas. A conversão não redesenha os símbolos.
+Para o fundo são usados 16 níveis de luminância no intervalo 0–48, quatro bits
+por pixel, dois pixels por byte. O intervalo escuro preserva o contraste com
+os ícones brancos. Em outras orientações o renderizador usa recorte central.
 
 * Logo: 160 × 149, 5.960 bytes.
 * Cada ícone: 128 × 128, 4.096 bytes.
 * Total dos pixels compilados (logo + 15 ícones): **67.400 bytes na flash**.
 * Acréscimo dos 12 ícones aprovados: **49.152 bytes de pixels na flash**.
-* Renderização: buffer local RGB565 de uma linha de até 320 bytes, mais uma
-  paleta de quatro cores. Sem framebuffer, sprites, PNGs em RAM ou acesso ao SD.
+* Fundo: 320 × 240, **38.400 bytes na flash**.
+* Total com o fundo: **105.800 bytes de pixels na flash**.
+* Renderização: buffer local RGB565 de uma linha de até 320 bytes nos ícones
+  ou 640 bytes no fundo, mais variáveis locais. Sem framebuffer, sprites,
+  decodificação de PNG/JPEG em RAM ou acesso ao SD.
 
-As prévias em `preview/` mostram exatamente os quatro níveis empacotados,
+As prévias em `preview/` mostram os níveis empacotados (quatro nos símbolos,
+16 no fundo),
 antes da conversão para RGB565. `assets.json` registra dimensões e hashes.
 Os originais/PNG de prévia não são incorporados à firmware; somente o arquivo
 gerado `src/core/dedsec_art_data.inc` é utilizado pelo renderizador.
@@ -46,7 +57,7 @@ python -m unittest discover -s tools/dedsec -p test_art.py
 ```
 
 O check de publicação `tools/dedsec/check_art_image.py` usa só a biblioteca
-padrão e confere hashes/fontes, limites de tamanho e a presença dos 16
+padrão e confere hashes/fontes, limites de tamanho e a presença dos 17
 payloads de pixels na imagem compilada. Ele também é executado pelo verificador
 do pacote e pelo workflow do webflasher, sem instalar Pillow no CI.
 

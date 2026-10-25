@@ -31,6 +31,8 @@ JsonDocument BruceConfig::toJson() const {
     setting["instantBoot"] = instantBoot;
 #ifdef DEDSEC_OS
     setting["dedsecUiRevision"] = 1;
+    setting["dedsecWallpaper"] = dedsecWallpaper;
+    setting["dedsecBootDuration"] = dedsecBootDuration;
 #endif
     setting["keyboardLang"] = keyboardLang;
 
@@ -276,6 +278,18 @@ void BruceConfig::fromFile(bool checkFS) {
         count++;
         log_e("Fail");
     }
+#ifdef DEDSEC_OS
+    // Old configurations use valid defaults; invalid new values are ignored.
+    dedsecWallpaper = true;
+    dedsecBootDuration = 4000;
+    if (setting["dedsecWallpaper"].is<bool>()) dedsecWallpaper = setting["dedsecWallpaper"].as<bool>();
+    else if (!setting["dedsecWallpaper"].isNull()) configStorageOk = false;
+    if (setting["dedsecBootDuration"].is<int>()) {
+        const int duration = setting["dedsecBootDuration"].as<int>();
+        if (duration >= 1000 && duration <= 10000) dedsecBootDuration = duration;
+        else configStorageOk = false;
+    } else if (!setting["dedsecBootDuration"].isNull()) configStorageOk = false;
+#endif
     if (!setting["keyboardLang"].isNull()) {
         keyboardLang = setting["keyboardLang"].as<String>();
     } else {
@@ -569,6 +583,7 @@ void BruceConfig::validateConfig() {
 #ifdef DEDSEC_OS
     bright = constrain(bright, 0, 100);
     instantBoot = instantBoot == 1 ? 1 : 0;
+    if (dedsecBootDuration < 1000 || dedsecBootDuration > 10000) dedsecBootDuration = 4000;
 #endif
     validateDimmerValue();
     validateBrightValue();

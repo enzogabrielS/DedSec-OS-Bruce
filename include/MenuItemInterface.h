@@ -3,6 +3,9 @@
 
 #include "core/display.h"
 #include <globals.h>
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 
 class MenuItemInterface {
 public:
@@ -29,6 +32,10 @@ public:
     void draw(float scale = 1) {
         if (rotation != bruceConfigPins.rotation) resetCoordinates();
         if (!checkTheme()) {
+#ifdef DEDSEC_OS
+            if (dedsecMenuWallpaperEnabled()) dedsecDrawMenuWallpaper();
+            else
+#endif
             tft.fillRect(0, 27, tftWidth, tftHeight - 27, bruceConfig.bgColor);
             drawIcon(scale);
             drawArrows(scale);
@@ -43,10 +50,16 @@ public:
     }
 
     void drawArrows(float scale = 1) {
+#ifdef DEDSEC_OS
+        if (!dedsecMenuWallpaperEnabled()) {
+#endif
         tft.fillRect(arrowAreaX, iconAreaY, arrowAreaW, iconAreaH, bruceConfig.bgColor);
         tft.fillRect(
             tftWidth - arrowAreaX - arrowAreaW, iconAreaY, arrowAreaW, iconAreaH, bruceConfig.bgColor
         );
+#ifdef DEDSEC_OS
+        }
+#endif
 
         int arrowSize = scale * 10;
         int lineWidth = scale * 3;
@@ -127,6 +140,9 @@ protected:
     MenuItemInterface(const char *name) : _name(name) {}
 
     void clearIconArea(void) {
+#ifdef DEDSEC_OS
+        if (dedsecMenuWallpaperEnabled()) return;
+#endif
         tft.fillRect(iconAreaX, iconAreaY, iconAreaW, iconAreaH, bruceConfig.bgColor);
     }
     void clearImgArea(void) { tft.fillRect(7, 27, tftWidth - 14, tftHeight - 34, bruceConfig.bgColor); }
