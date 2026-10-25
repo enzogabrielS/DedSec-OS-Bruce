@@ -1,5 +1,8 @@
 #include "NRF24.h"
 #include "core/display.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 #include "core/utils.h"
 #include "modules/NRF24/nrf_common.h"
 #include "modules/NRF24/nrf_jammer.h"
@@ -77,6 +80,11 @@ void NRF24Menu::configMenu() {
 
 void NRF24Menu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Nrf24, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
     int iconW = scale * 80;
     int iconH = scale * 60;
 

@@ -1,5 +1,8 @@
 #include "RFIDMenu.h"
 #include "core/display.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 #include "core/settings.h"
 #include "core/utils.h"
 #include "modules/rfid/PN532KillerTools.h"
@@ -96,6 +99,11 @@ void RFIDMenu::configMenu() {
 
 void RFIDMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Rfid, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
     int iconSize = scale * 70;
     int iconRadius = scale * 7;
     int deltaRadius = scale * 10;

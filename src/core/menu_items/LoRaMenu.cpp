@@ -1,6 +1,9 @@
 #if !defined(LITE_VERSION)
 #include "LoRaMenu.h"
 #include "core/display.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 #include "core/utils.h"
 #include "modules/lora/LoRaRF.h"
 
@@ -17,6 +20,11 @@ void LoRaMenu::optionsMenu() {
 
 void LoRaMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Lora, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
     scale *= 0.75;
     int cx = iconCenterX;
     int cy = iconCenterY + (scale * 8);

@@ -1,0 +1,80 @@
+{
+  "generator": "image_gen (built-in)",
+  "approved_by_user": true,
+  "date": "2026-10-24",
+  "style_reference": "source/config.png",
+  "assets": [
+    {
+      "number": 1,
+      "category": "RF",
+      "source": "source/rf.png",
+      "prompt": "Create ONE new RF menu icon as a sibling of the reference artwork, using the supplied image ONLY as a STYLE REFERENCE. Deliver a flat 1024x1024 raster square with a pure black background. Center one large distressed white circular border, matching the reference's rough chalk stencil texture, diagonal scratching, missing pixel chunks, tiny square glitches and a few short paint drips. Inside the ring replace the gear with a bold, immediately recognizable RADIO ANTENNA MAST emitting two symmetrical pairs of radio-wave brackets. Make the mast thick and simple and the composition readable when reduced to 128x128. The ring occupies approximately 86% of the canvas, with generous black margin, and the central symbol occupies about 56%. Keep substantial solid white shapes under the texture, not a thin outline pictogram. Monochrome white, gray flecks and black only. Isolated single emblem, front view, no perspective, no glow, no shadows, no gradients, no background scenery. NO gear, NO WiFi glyph, NO letters, NO labels, NO numbers, NO watermark. Preserve the dark urban hacker stencil character of the reference without adding extra decoration."
+    },
+    {
+      "number": 2,
+      "category": "NRF24",
+      "source": "source/nrf24.png",
+      "prompt": "Create ONE new 02 — NRF24 menu emblem as a sibling of the supplied reference. Reference image is STYLE ONLY. Subject inside the circular border: a chunky square radio microchip with four thick pins on each side and two small curved radio arcs at its upper right. The chip is simple, with a black inset square at its center. Flat square 1024x1024 image, pure black background. A large distressed white circular outline occupies 86% of the square, matching the reference's irregular chalk/screenprinted stencil, diagonal scratches, small missing square chunks at the upper right and lower left, and a few short drips. Central symbol occupies about 56% of the square, thick solid white forms with distressed hatching and black gaps. Strong open black negative space; unmistakable silhouette at 128x128. Use only black, white and incidental grayscale grain. Match the scale, ring thickness, gritty texture and spare composition of the reference, but REPLACE its gear completely with the requested symbol. Single centered emblem. No text, no letters, no labels or numbers anywhere. No color, no glow, no shadow, no 3D, no scenery, no mockup, no decorative skull, no gear."
+    },
+    {
+      "number": 3,
+      "category": "LoRa",
+      "source": "source/lora.png",
+      "prompt": "Create ONE new 03 — LoRa menu emblem as a sibling of the supplied reference. Reference image is STYLE ONLY. Subject inside the circular border: two bold small antenna endpoints separated by a long horizontal dotted signal path and a wide arch over them, clearly expressing long-range radio communication. Keep only these few strong shapes; no landscape. Flat square 1024x1024 image, pure black background. A large distressed white circular outline occupies 86% of the square, matching the reference's irregular chalk/screenprinted stencil, diagonal scratches, small missing square chunks at the upper right and lower left, and a few short drips. Central symbol occupies about 56% of the square, thick solid white forms with distressed hatching and black gaps. Strong open black negative space; unmistakable silhouette at 128x128. Use only black, white and incidental grayscale grain. Match the scale, ring thickness, gritty texture and spare composition of the reference, but REPLACE its gear completely with the requested symbol. Single centered emblem. No text, no letters, no labels or numbers anywhere. No color, no glow, no shadow, no 3D, no scenery, no mockup, no decorative skull, no gear."
+    },
+    {
+      "number": 4,
+      "category": "FM",
+      "source": "source/fm.png",
+      "prompt": "Create ONE new 04 — FM menu emblem as a sibling of the supplied reference. Reference image is STYLE ONLY. Subject inside the circular border: a chunky front-facing portable radio receiver, with a single diagonal antenna, one bold circular speaker and two simple tuning knobs. No tiny station marks. Flat square 1024x1024 image, pure black background. A large distressed white circular outline occupies 86% of the square, matching the reference's irregular chalk/screenprinted stencil, diagonal scratches, small missing square chunks at the upper right and lower left, and a few short drips. Central symbol occupies about 56% of the square, thick solid white forms with distressed hatching and black gaps. Strong open black negative space; unmistakable silhouette at 128x128. Use only black, white and incidental grayscale grain. Match the scale, ring thickness, gritty texture and spare composition of the reference, but REPLACE its gear completely with the requested symbol. Single centered emblem. No text, no letters, no labels or numbers anywhere. No color, no glow, no shadow, no 3D, no scenery, no mockup, no decorative skull, no gear."
+    },
+    {
+      "number": 5,
+      "category": "Infravermelho",
+      "source": "source/ir.png",
+      "prompt": "Create ONE new 05 — Infravermelho menu emblem as a sibling of the supplied reference. Reference image is STYLE ONLY. Subject inside the circular border: a bold upright handheld remote control with rounded corners, three large black button cutouts and two short curved infrared signal arcs emerging above its top. Keep the remote large, simple, solid and recognizable. Flat square 1024x1024 image, pure black background. A large distressed white circular outline occupies 86% of the square, matching the reference's irregular chalk/screenprinted stencil, diagonal scratches, small missing square chunks at the upper right and lower left, and a few short drips. Central symbol occupies about 56% of the square, thick solid white forms with distressed hatching and black gaps. Strong open black negative space; unmistakable silhouette at 128x128. Use only black, white and incidental grayscale grain. Match the scale, ring thickness, gritty texture and spare composition of the reference, but REPLACE its gear completely with the requested symbol. Single centered emblem. No text, no letters, no labels or numbers anywhere. No color, no glow, no shadow, no 3D, no scenery, no mockup, no decorative skull, no gear."
+    },
+    {
+      "number": 6,
+      "category": "Ethernet",
+      "source": "source/ethernet.png",
+      "prompt": "Create ONE new 06 — Ethernet menu emblem as a sibling of the supplied reference. Reference image is STYLE ONLY. Subject inside the circular border: one chunky RJ45 Ethernet plug pointing upward, with a clear rectangular connector head, four broad black contact slots, a locking tab and a short thick cable exiting downward. Make the cable connector unmistakable, not a microchip. Flat square 1024x1024 image, pure black background. A large distressed white circular outline occupies 86% of the square, matching the reference's irregular chalk/screenprinted stencil, diagonal scratches, small missing square chunks at the upper right and lower left, and a few short drips. Central symbol occupies about 56% of the square, thick solid white forms with distressed hatching and black gaps. Strong open black negative space; unmistakable silhouette at 128x128. Use only black, white and incidental grayscale grain. Match the scale, ring thickness, gritty texture and spare composition of the reference, but REPLACE its gear completely with the requested symbol. Single centered emblem. No text, no letters, no labels or numbers anywhere. No color, no glow, no shadow, no 3D, no scenery, no mockup, no decorative skull, no gear."
+    },
+    {
+      "number": 7,
+      "category": "GPS",
+      "source": "source/gps.png",
+      "prompt": "Create ONE new 07 — GPS menu emblem as a sibling of the supplied reference. Reference image is STYLE ONLY. Subject inside the circular border: one bold map location pin with a large circular black aperture and pointed bottom, centered over two short horizontal locator marks. Keep this a strong single location symbol, with no map or scenery. Flat square 1024x1024 image, pure black background. A large distressed white circular outline occupies 86% of the square, matching the reference's irregular chalk/screenprinted stencil, diagonal scratches, small missing square chunks at the upper right and lower left, and a few short drips. Central symbol occupies about 56% of the square, thick solid white forms with distressed hatching and black gaps. Strong open black negative space; unmistakable silhouette at 128x128. Use only black, white and incidental grayscale grain. Match the scale, ring thickness, gritty texture and spare composition of the reference, but REPLACE its gear completely with the requested symbol. Single centered emblem. No text, no letters, no labels or numbers anywhere. No color, no glow, no shadow, no 3D, no scenery, no mockup, no decorative skull, no gear."
+    },
+    {
+      "number": 8,
+      "category": "RFID",
+      "source": "source/rfid.png",
+      "prompt": "Create ONE new 08 — RFID menu emblem as a sibling of the supplied reference. Reference image is STYLE ONLY. Subject inside the circular border: one slightly tilted rectangular RFID access card containing a simple square chip with two short contact traces, and two thick curved radio brackets to its right. No numbers, no lettering, no bank or payment symbols. Flat square 1024x1024 image, pure black background. A large distressed white circular outline occupies 86% of the square, matching the reference's irregular chalk/screenprinted stencil, diagonal scratches, small missing square chunks at the upper right and lower left, and a few short drips. Central symbol occupies about 56% of the square, thick solid white forms with distressed hatching and black gaps. Strong open black negative space; unmistakable silhouette at 128x128. Use only black, white and incidental grayscale grain. Match the scale, ring thickness, gritty texture and spare composition of the reference, but REPLACE its gear completely with the requested symbol. Single centered emblem. No text, no letters, no labels or numbers anywhere. No color, no glow, no shadow, no 3D, no scenery, no mockup, no decorative skull, no gear."
+    },
+    {
+      "number": 9,
+      "category": "Arquivos",
+      "source": "source/files.png",
+      "prompt": "Create ONE new 09 — Arquivos menu emblem as a sibling of the supplied reference. Reference image is STYLE ONLY. Subject inside the circular border: one bold file folder silhouette with a raised upper left tab, its front slightly open with one simple sheet peeking out behind it. Thick white surfaces and black dividing gaps, no tiny file details. Flat square 1024x1024 image, pure black background. A large distressed white circular outline occupies 86% of the square, matching the reference's irregular chalk/screenprinted stencil, diagonal scratches, small missing square chunks at the upper right and lower left, and a few short drips. Central symbol occupies about 56% of the square, thick solid white forms with distressed hatching and black gaps. Strong open black negative space; unmistakable silhouette at 128x128. Use only black, white and incidental grayscale grain. Match the scale, ring thickness, gritty texture and spare composition of the reference, but REPLACE its gear completely with the requested symbol. Single centered emblem. No text, no alphabetic letters, no labels or numbers anywhere. No color, no glow, no shadow, no 3D, no scenery, no mockup, no decorative skull, no gear."
+    },
+    {
+      "number": 10,
+      "category": "Scripts",
+      "source": "source/scripts.png",
+      "prompt": "Create ONE new 10 — Scripts menu emblem as a sibling of the supplied reference. Reference image is STYLE ONLY. Subject inside the circular border: one large code symbol made of a thick left angle bracket, a forward slash, and a thick right angle bracket, arranged as the punctuation </>. Just these three bold shapes, not a terminal window or document. These are graphic coding punctuation, no alphabetic letters. Flat square 1024x1024 image, pure black background. A large distressed white circular outline occupies 86% of the square, matching the reference's irregular chalk/screenprinted stencil, diagonal scratches, small missing square chunks at the upper right and lower left, and a few short drips. Central symbol occupies about 56% of the square, thick solid white forms with distressed hatching and black gaps. Strong open black negative space; unmistakable silhouette at 128x128. Use only black, white and incidental grayscale grain. Match the scale, ring thickness, gritty texture and spare composition of the reference, but REPLACE its gear completely with the requested symbol. Single centered emblem. No text, no alphabetic letters, no labels or numbers anywhere. No color, no glow, no shadow, no 3D, no scenery, no mockup, no decorative skull, no gear."
+    },
+    {
+      "number": 11,
+      "category": "Relógio",
+      "source": "source/clock.png",
+      "prompt": "Create ONE new 11 — Relógio menu emblem as a sibling of the supplied reference. Reference image is STYLE ONLY. Subject inside the circular border: one bold analog clock face with two thick hands showing ten past ten, and four chunky hour markers at top bottom left and right. Keep the clock outline separate from the outer distressed emblem ring. No numerals or numbers. Flat square 1024x1024 image, pure black background. A large distressed white circular outline occupies 86% of the square, matching the reference's irregular chalk/screenprinted stencil, diagonal scratches, small missing square chunks at the upper right and lower left, and a few short drips. Central symbol occupies about 56% of the square, thick solid white forms with distressed hatching and black gaps. Strong open black negative space; unmistakable silhouette at 128x128. Use only black, white and incidental grayscale grain. Match the scale, ring thickness, gritty texture and spare composition of the reference, but REPLACE its gear completely with the requested symbol. Single centered emblem. No text, no alphabetic letters, no labels or numbers anywhere. No color, no glow, no shadow, no 3D, no scenery, no mockup, no decorative skull, no gear."
+    },
+    {
+      "number": 12,
+      "category": "Outros",
+      "source": "source/others.png",
+      "prompt": "Create ONE new 12 — Outros menu emblem as a sibling of the supplied reference. Reference image is STYLE ONLY. Subject inside the circular border: one crossed open-end wrench and flat-head screwdriver, forming a bold X toolkit symbol. Clearly identifiable simple tool silhouettes, thick handles, open jaw on wrench, no gear and no extra objects. Flat square 1024x1024 image, pure black background. A large distressed white circular outline occupies 86% of the square, matching the reference's irregular chalk/screenprinted stencil, diagonal scratches, small missing square chunks at the upper right and lower left, and a few short drips. Central symbol occupies about 56% of the square, thick solid white forms with distressed hatching and black gaps. Strong open black negative space; unmistakable silhouette at 128x128. Use only black, white and incidental grayscale grain. Match the scale, ring thickness, gritty texture and spare composition of the reference, but REPLACE its gear completely with the requested symbol. Single centered emblem. No text, no alphabetic letters, no labels or numbers anywhere. No color, no glow, no shadow, no 3D, no scenery, no mockup, no decorative skull, no gear."
+    }
+  ]
+}

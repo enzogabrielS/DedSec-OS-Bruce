@@ -1,6 +1,6 @@
 {
   "name": "DedSec OS — CYD ESP32-2432S028",
-  "version": "2026.10.24-bw.2",
+  "version": "2026.10.24-bw.3",
   "new_install_prompt_erase": true,
   "new_install_improv_wait_time": 0,
   "builds": [

@@ -1,5 +1,8 @@
 #include "RFMenu.h"
 #include "core/display.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 #include "core/settings.h"
 #include "core/utils.h"
 #include "modules/rf/record.h"
@@ -56,6 +59,11 @@ void RFMenu::configMenu() {
 
 void RFMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Rf, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
     int radius = scale * 7;
     int deltaRadius = scale * 10;
     int triangleSize = scale * 30;

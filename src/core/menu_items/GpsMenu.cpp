@@ -1,5 +1,8 @@
 #include "GpsMenu.h"
 #include "core/display.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 #include "core/settings.h"
 #include "core/utils.h"
 #include "modules/gps/gps_tracker.h"
@@ -42,6 +45,11 @@ void GpsMenu::configMenu() {
 
 void GpsMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Gps, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
     int radius = scale * 18;
     if (radius % 2 != 0) radius++;
 

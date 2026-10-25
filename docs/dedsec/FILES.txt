@@ -100,3 +100,23 @@ docs/dedsec/ARTES.md
 docs/dedsec/release-2026.10.24-bw.1.json
 docs/dedsec/artwork-icons-image.json
 docs/dedsec/artwork-build-evidence.zip
+
+Doze icones gerados e aprovados:
+src/core/menu_items/RFMenu.cpp
+src/core/menu_items/NRF24.cpp
+src/core/menu_items/LoRaMenu.cpp
+src/core/menu_items/FMMenu.cpp
+src/core/menu_items/IRMenu.cpp
+src/core/menu_items/EthernetMenu.cpp
+src/core/menu_items/GpsMenu.cpp
+src/core/menu_items/RFIDMenu.cpp
+src/core/menu_items/FileMenu.cpp
+src/core/menu_items/ScriptsMenu.cpp
+src/core/menu_items/ClockMenu.cpp
+src/core/menu_items/OthersMenu.cpp
+media/dedsec/generated-icons.json
+media/dedsec/source/ (mais 12 PNGs aprovados)
+media/dedsec/preview/ (mais 12 previas de 2 bits)
+docs/dedsec/ICONES.md
+docs/dedsec/release-2026.10.24-bw.2.json
+docs/dedsec/approved-icons-build-evidence.zip

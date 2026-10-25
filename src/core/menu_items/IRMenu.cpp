@@ -1,5 +1,8 @@
 #include "IRMenu.h"
 #include "core/display.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 #include "core/settings.h"
 #include "core/utils.h"
 #include "modules/ir/TV-B-Gone.h"
@@ -45,6 +48,11 @@ void IRMenu::configMenu() {
 
 void IRMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Infrared, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
     int iconSize = scale * 60;
     int radius = scale * 7;
     int deltaRadius = scale * 10;

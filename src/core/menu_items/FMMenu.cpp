@@ -1,5 +1,8 @@
 #include "FMMenu.h"
 #include "core/display.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 #include "core/utils.h"
 #include "modules/fm/fm.h"
 
@@ -28,6 +31,11 @@ void FMMenu::optionsMenu() {
 
 void FMMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Fm, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
     int iconW = scale * 80;
     int iconH = scale * 60;
 

@@ -1,5 +1,8 @@
 # Logo e símbolos dos anexos — 2026.10.24-bw.2
 
+Registro histórico desta revisão. A versão atual com os outros 12 símbolos
+aprovados e suas medições está em [ICONES.md](ICONES.md).
+
 Integração direta na base Bruce, para `DedSec-CYD-2432S028`.
 
 ## Resultado no código

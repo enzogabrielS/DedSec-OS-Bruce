@@ -1,6 +1,9 @@
 #include "EthernetMenu.h"
 #if !defined(LITE_VERSION)
 #include "core/display.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 #include "core/settings.h"
 #include "core/utils.h"
 #include "modules/ethernet/ARPScanner.h"
@@ -60,6 +63,11 @@ void EthernetMenu::optionsMenu() {
 
 void EthernetMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Ethernet, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
 
     // Dimensions
     int cx = iconCenterX;

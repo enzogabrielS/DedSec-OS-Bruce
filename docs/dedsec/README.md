@@ -3,6 +3,7 @@
 Personalização do Bruce oficial, sem substituir drivers, navegação, bibliotecas
 ou mapa de partições. Base e análise em [AUDITORIA.md](AUDITORIA.md).
 Resultados reais e limitações em [VALIDACAO.md](VALIDACAO.md).
+Revisão atual, ícones aprovados e medições em [ICONES.md](ICONES.md).
 
 ## Preparar e compilar no Windows
 

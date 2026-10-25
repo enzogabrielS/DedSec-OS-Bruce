@@ -1,6 +1,9 @@
 #include "OthersMenu.h"
 
 #include "core/display.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 #include "core/utils.h"
 #include "modules/badusb_ble/ducky_typer.h"
 #include "modules/bjs_interpreter/interpreter.h"
@@ -69,6 +72,11 @@ void OthersMenu::micMenu() {
 
 void OthersMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Others, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
 
     // Dynamic radius calculation based on scale for responsive rendering
     int radius = scale * 7;

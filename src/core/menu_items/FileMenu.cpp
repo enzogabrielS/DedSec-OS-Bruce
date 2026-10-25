@@ -1,5 +1,8 @@
 #include "FileMenu.h"
 #include "core/display.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 #include "core/massStorage.h"
 #include "core/sd_functions.h"
 #include "core/utils.h"
@@ -35,6 +38,11 @@ void FileMenu::optionsMenu() {
 }
 void FileMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Files, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
     int iconW = scale * 32;
     int iconH = scale * 48;
 

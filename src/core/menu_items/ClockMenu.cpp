@@ -1,5 +1,8 @@
 #include "ClockMenu.h"
 #include "core/display.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 #include "core/settings.h"
 #include "modules/others/timer.h"
 
@@ -32,6 +35,11 @@ void ClockMenu::showSubMenu() {
 
 void ClockMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Clock, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
     int radius = scale * 30;
     int pointerSize = scale * 15;
 

@@ -12,6 +12,18 @@ const PackedArt &getArt(DedSecArt art) {
         case DedSecArt::Wifi: return WifiArt;
         case DedSecArt::Bluetooth: return BluetoothArt;
         case DedSecArt::Config: return ConfigArt;
+        case DedSecArt::Rf: return RfArt;
+        case DedSecArt::Nrf24: return Nrf24Art;
+        case DedSecArt::Lora: return LoraArt;
+        case DedSecArt::Fm: return FmArt;
+        case DedSecArt::Infrared: return InfraredArt;
+        case DedSecArt::Ethernet: return EthernetArt;
+        case DedSecArt::Gps: return GpsArt;
+        case DedSecArt::Rfid: return RfidArt;
+        case DedSecArt::Files: return FilesArt;
+        case DedSecArt::Scripts: return ScriptsArt;
+        case DedSecArt::Clock: return ClockArt;
+        case DedSecArt::Others: return OthersArt;
         default: return LogoArt;
     }
 }

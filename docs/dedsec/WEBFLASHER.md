@@ -4,8 +4,9 @@ Página: https://enzogabrielS.github.io/DedSec-OS-Bruce/
 
 O diretório `webflasher/` contém uma página estática, manifesto ESP Web Tools,
 metadados e a imagem completa validada. Não modifica nem recompila a firmware.
-O pacote atual corresponde à revisão com os anexos `2026.10.24-bw.2`.
-Alterações e validação em [ARTES.md](ARTES.md). A revisão preto e branco anterior
+O pacote atual corresponde à revisão com os 12 ícones aprovados `2026.10.24-bw.3`.
+Alterações e validação em [ICONES.md](ICONES.md). A integração anterior dos
+quatro anexos está em [ARTES.md](ARTES.md). A revisão preto e branco anterior
 está documentada em [MONOCROMO.md](MONOCROMO.md). O pacote inicial era
 `2026.10.24+6de6ad3f`; seus hashes foram preservados no registro histórico.
 A gravação por USB ainda exige validação na CYD real.

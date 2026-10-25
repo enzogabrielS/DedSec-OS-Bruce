@@ -42,5 +42,137 @@
     "gamma": 0.75,
     "source_sha256": "05584639772c3defdcefb0cea3577bdf5f17bd30fd5ae77ee77af00a9c64ce23",
     "packed_sha256": "b510820eb1f6cd306ae05a5539369b9e74805bcc4f7fee3f42d439dffc19c47e"
+  },
+  {
+    "name": "Rf",
+    "source": "source/rf.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "0c3aa391ddaffc555f8792496821193bbaa2dd9ed60747c74c527baff6127a95",
+    "packed_sha256": "3d66051c375e525f7368c3d1f89c2eb6ca705e23acff283ed25552860cebb700"
+  },
+  {
+    "name": "Nrf24",
+    "source": "source/nrf24.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "10794b77e15b9e1aa6080c591fdfe86cd9c29efa296f40d40b0e2e13962af615",
+    "packed_sha256": "7b9afeb5fe63df40a8a8d193ec0688d4d761fc091669081b64b68ea1ce529bc7"
+  },
+  {
+    "name": "Lora",
+    "source": "source/lora.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "49f060e9a393163716d56190d5c6795ea0d75b92bc8bca3cd1291d2bed46bd05",
+    "packed_sha256": "0f13e7e73a881f8d8c24e1bda80ed23dc2e479d5eef75712f62668861203e9d7"
+  },
+  {
+    "name": "Fm",
+    "source": "source/fm.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "721d6420cc02f72f28084ab426af08141867b8d5d7f40436ae4a06687869584f",
+    "packed_sha256": "6874cc7a4fdafc54bdcea395d6b85f8c4c1369bfc0e84c09d192da8ffe12a1ad"
+  },
+  {
+    "name": "Infrared",
+    "source": "source/ir.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "5652b20845c8908a8d6b920021a79de7d6e46905a9ce7ec5f9b2f77182288304",
+    "packed_sha256": "8b1e9b0f7ed1e3c8b79d589e3cd8c91dce7938593ea4e4aca8d6187aeebaca3b"
+  },
+  {
+    "name": "Ethernet",
+    "source": "source/ethernet.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "b246c5d5e490114a924d610c4e0564c0f4267f93b71b917b54ba65524da112e2",
+    "packed_sha256": "f4d55289aedbde03ac44c0f677dcf01937eaa493a1ed6c846b73cddfde2a745e"
+  },
+  {
+    "name": "Gps",
+    "source": "source/gps.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "98b2debb053e9abddc0dfb200c0869cd208f40ba458390ce73228980f9238bd7",
+    "packed_sha256": "d1f5bf83a244555a34109d6af9481e4fb050cb221cb3c001d9a03e453b0f1b89"
+  },
+  {
+    "name": "Rfid",
+    "source": "source/rfid.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "2ca6921bc61850a883773bf9b04be46c2fcc082d463bdd5bf1f123bc289c190d",
+    "packed_sha256": "7ec389d48d4f6fe37850b0a561a97a50e40bf9262fe33e3dd00db279719f4e25"
+  },
+  {
+    "name": "Files",
+    "source": "source/files.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "27e403ba168b3b90bbcba503ad8be90c33a1f6ff14a1c4aa2b38a97df5dc2d51",
+    "packed_sha256": "55685086effd8a59b7af415c398e2a196636ece5f3c77ef3d7a9ba7737c06a92"
+  },
+  {
+    "name": "Scripts",
+    "source": "source/scripts.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "c10a72e2ff72ec907cc8d46fb5746005a3b1de1f02dd628af792b0657c064552",
+    "packed_sha256": "f971e48c8d405c33a48bd4bf8470674fe2b808940e50dddc9b00bf40818bc816"
+  },
+  {
+    "name": "Clock",
+    "source": "source/clock.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "d0457946827d7e2d9b04433a1931db1a7c2aa886f8028743c050c01902b1563b",
+    "packed_sha256": "f864d22e329ad4141e9eefc032eda316e5594bd161041b2cb695f2bca4cec184"
+  },
+  {
+    "name": "Others",
+    "source": "source/others.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "a1d9ecbda27cafca47c0e90020005e23d05b3c4b451bdc3631113f16d488fe41",
+    "packed_sha256": "9e03f3987afed36a0af16069f1e143cd94967727504e1e1b3ed0250ec6304396"
   }
 ]
