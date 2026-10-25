@@ -1,6 +1,7 @@
 #include "WifiMenu.h"
 #include "core/display.h"
 #ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
 #include "modules/others/dedsec.h"
 #endif
 #include "core/settings.h"
@@ -155,6 +156,11 @@ void WifiMenu::configMenu() {
 
 void WifiMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Wifi, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
     int deltaY = scale * 20;
     int radius = scale * 6;
 

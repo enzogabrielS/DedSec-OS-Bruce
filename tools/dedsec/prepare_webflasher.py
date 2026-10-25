@@ -6,6 +6,7 @@ import struct
 from pathlib import Path
 
 from verify_image import require, verify
+from check_art_image import verify_art
 
 ROOT = Path(__file__).resolve().parents[2]
 FILENAME = "DedSec-OS-CYD-2432S028.bin"
@@ -46,6 +47,7 @@ def check(root: Path) -> dict:
     require(factory == (0x10000, 0x3C0000), "Unexpected factory partition")
     for filename in ("index.html", "styles.css", "app.mjs", "integrity.mjs", ".nojekyll"):
         require((site / filename).is_file(), f"Missing {filename}")
+    verify_art(root, data)
     return {"version": release["version"], "bytes": len(data), "sha256": report["merged_sha256"]}
 
 

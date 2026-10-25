@@ -1,0 +1,10 @@
+{
+  "environment": "DedSec-CYD-2432S028",
+  "application_bytes": 3610512,
+  "application_partition_bytes": 3932160,
+  "application_free_bytes": 321648,
+  "merged_bytes": 3676048,
+  "application_sha256": "80716818bead89a1a6584b2fcaf0f7f49c092afcdd9acdd2192072129412369e",
+  "merged_sha256": "f5fc8093ba8937ba14ae936505b5258886b8f5eb23dd457b0b262ffd7d597292",
+  "physical_tests": "not performed"
+}

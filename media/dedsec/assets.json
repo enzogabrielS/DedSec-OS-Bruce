@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Logo",
+    "source": "source/logo.png",
+    "width": 160,
+    "height": 149,
+    "bits_per_pixel": 2,
+    "flash_bytes": 5960,
+    "gamma": 0.6,
+    "source_sha256": "f9a0b744d65bd8a6532e1979d0958e6e31b770db38f6c983152ee8c62e0562c5",
+    "packed_sha256": "6da86a50f40bfd79afd14c91c6973442609312a6afe4c0cc4fd35dea66448a73"
+  },
+  {
+    "name": "Wifi",
+    "source": "source/wifi.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "302c7c8529810f8fc895fe51bb70c9657e0c9ccc43aa477058c2295d0233f70e",
+    "packed_sha256": "185d0b30cc93b5a7f5a77727695b135d3017220a3ef5513a12393bec7022cc52"
+  },
+  {
+    "name": "Bluetooth",
+    "source": "source/bluetooth.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "7c06966cc2fc0f81cc329819310bd8c0b4a554e446686f3aa89591a2c885a686",
+    "packed_sha256": "b2a78c017b55b69dff983334f6a131bd01fbbdf5f4e00bf6032affc2058b9113"
+  },
+  {
+    "name": "Config",
+    "source": "source/config.png",
+    "width": 128,
+    "height": 128,
+    "bits_per_pixel": 2,
+    "flash_bytes": 4096,
+    "gamma": 0.75,
+    "source_sha256": "05584639772c3defdcefb0cea3577bdf5f17bd30fd5ae77ee77af00a9c64ce23",
+    "packed_sha256": "b510820eb1f6cd306ae05a5539369b9e74805bcc4f7fee3f42d439dffc19c47e"
+  }
+]

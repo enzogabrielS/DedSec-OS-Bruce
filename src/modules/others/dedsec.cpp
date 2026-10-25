@@ -1,5 +1,6 @@
 #ifdef DEDSEC_OS
 #include "dedsec.h"
+#include "core/dedsec_art.h"
 #include "core/dedsec_palette.h"
 #include "core/display.h"
 #include "core/radio_mem.h"
@@ -58,34 +59,22 @@ bool confirm(const char *effect, const char *action) {
     return accepted;
 }
 
-void drawBootMark(int cx, int cy, unsigned frame) {
-    const int offset = frame == 2 ? 4 : (frame == 3 ? -3 : 0);
-    cx += offset;
-    // Original geometric skull: built from TFT primitives, no image decoder,
-    // sprite or framebuffer. Crossed eyes and a compact jaw stay legible.
-    tft.drawFastVLine(cx - 40, cy - 22, 48, DedSec::Muted);
-    tft.drawFastHLine(cx - 40, cy - 22, 10, DedSec::Muted);
-    tft.drawFastHLine(cx - 40, cy + 25, 10, DedSec::Muted);
-    tft.drawFastVLine(cx + 39, cy - 22, 48, DedSec::Muted);
-    tft.drawFastHLine(cx + 30, cy - 22, 10, DedSec::Muted);
-    tft.drawFastHLine(cx + 30, cy + 25, 10, DedSec::Muted);
-    if (frame == 0) return;
-    tft.fillRoundRect(cx - 25, cy - 25, 50, 40, 12, DedSec::Text);
-    tft.fillRect(cx - 16, cy + 8, 32, 21, DedSec::Text);
-    for (int eye : {-12, 12}) {
-        for (int width = 0; width < 2; ++width) {
-            tft.drawLine(cx + eye - 5, cy - 10 + width, cx + eye + 5, cy + width, DedSec::Background);
-            tft.drawLine(cx + eye - 5, cy + width, cx + eye + 5, cy - 10 + width, DedSec::Background);
-        }
+void drawBootLogo(unsigned frame, bool backdrop) {
+    // Raw panel dimensions are valid even before settings/storage are loaded.
+    const int cx = tft.width() / 2, cy = tft.height() / 2 - 22;
+    const int width = min(160, tft.width() - 32), height = min(150, tft.height() - 84);
+    tft.setTextFont(1);
+    tft.setTextDatum(TL_DATUM);
+    if (backdrop) {
+        tft.fillScreen(DedSec::Background);
+        tft.setTextSize(2);
+        tft.setTextColor(DedSec::Text, DedSec::Background);
+        tft.drawCentreString("DEDSEC OS", cx, cy + height / 2 + 10, 1);
     }
-    tft.fillTriangle(cx, cy + 3, cx - 4, cy + 10, cx + 4, cy + 10, DedSec::Background);
-    for (int tooth = -9; tooth <= 9; tooth += 9) {
-        tft.fillRect(cx + tooth - 1, cy + 19, 3, 10, DedSec::Background);
-    }
-    if (frame == 2 || frame == 3) {
-        tft.fillRect(cx - 26, cy + 3, 52, 3, DedSec::Background);
-        tft.drawFastHLine(cx - 35, cy - 15, 67, DedSec::Muted);
-    }
+    tft.fillRect(cx - width / 2 - 4, cy - height / 2 - 4, width + 8, height + 8, DedSec::Background);
+    const int shift = frame == 2 ? 3 : (frame == 3 ? -3 : (frame == 5 ? 2 : (frame == 7 ? -1 : 0)));
+    dedsecDrawArt(DedSecArt::Logo, cx, cy, width, height, DedSec::Text, DedSec::Background, shift);
+    tft.setTextSize(1);
 }
 
 // SSIDs are untrusted bytes. Keep control characters out of the UI/serial report.
@@ -121,23 +110,13 @@ void networkInfo(const wifi_ap_record_t &network) {
 }
 
 void dedsecBootStage(const char *stage, unsigned step) {
-    // A stage advances only at an actual setup call site, without artificial waits.
+    // Real diagnostics remain on serial; the panel shows the supplied logo
+    // from the first display access, including while storage initializes.
+    Serial.printf("[DedSec boot %u/4] %s\n", step, stage);
     if (bruceConfig.instantBoot) return;
-    tft.setTextFont(1);
-    tft.setTextDatum(TL_DATUM);
-    tft.fillScreen(DedSec::Background);
-    tft.setTextSize(3);
-    tft.setTextColor(DedSec::Text, DedSec::Background);
-    tft.drawString("DEDSEC OS", 20, 48, 1);
-    tft.drawFastHLine(20, 78, tft.width() - 40, DedSec::Accent);
-    tft.setTextSize(1);
-    tft.setTextColor(DedSec::Muted, DedSec::Background);
-    tft.drawString("CYD / BRUCE CORE", 20, 88, 1);
-    tft.setTextSize(2);
-    tft.drawString(stage, 20, 120, 1);
-    for (unsigned i = 0; i < 4; ++i) {
-        tft.fillRect(20 + i * 32, 155, 24, 3, i < step ? DedSec::Accent : DedSec::Divider);
-    }
+    // begin_tft() clears the panel after storage, so repaint at step 2.
+    // Other setup checkpoints leave the same logo in place without a full redraw.
+    if (step <= 2) drawBootLogo(0, true);
 }
 
 bool dedsecBootAnimationTick() {
@@ -153,13 +132,11 @@ bool dedsecBootAnimationTick() {
     if (!started) {
         started = true;
         began = millis();
-        tft.fillScreen(DedSec::Background);
-        tft.setTextFont(1);
-        tft.setTextDatum(TL_DATUM);
-        tft.setTextSize(1);
+        drawBootLogo(0, true);
+        previousFrame = 0;
         tft.setTextColor(DedSec::Muted, DedSec::Background);
-        tft.drawCentreString("CYD / BRUCE CORE", tftWidth / 2, 16, 1);
-        tft.drawCentreString("TOQUE PARA PULAR", tftWidth / 2, tftHeight - 12, 1);
+        // InputHandler is ready here; no unresponsive touch hint during storage.
+        tft.drawCentreString("TOQUE PARA PULAR", tft.width() / 2, tft.height() - 14, 1);
     }
     const uint32_t elapsed = millis() - began;
     // Scheduled by loop(), never a delay sequence or another FreeRTOS task.
@@ -171,19 +148,7 @@ bool dedsecBootAnimationTick() {
     const unsigned frame = elapsed / 60;
     if (frame != previousFrame) {
         previousFrame = frame;
-        const int cy = tftHeight / 2 - 25;
-        tft.fillRect(tftWidth / 2 - 48, cy - 29, 96, 63, DedSec::Background);
-        drawBootMark(tftWidth / 2, cy, frame);
-        tft.fillRect(10, cy + 42, tftWidth - 20, 28, DedSec::Background);
-        tft.setTextColor(DedSec::Text, DedSec::Background);
-        tft.setTextSize(3);
-        const char *title = frame < 2 ? "DED___ OS" : "DEDSEC OS";
-        tft.drawCentreString(title, tftWidth / 2 + (frame == 3 ? 3 : 0), cy + 42, 1);
-        tft.setTextSize(1);
-        tft.setTextColor(DedSec::Muted, DedSec::Background);
-        tft.drawCentreString("INICIALIZADO", tftWidth / 2, cy + 77, 1);
-        tft.fillRect(20, tftHeight - 29, tftWidth - 40, 2, DedSec::Divider);
-        tft.fillRect(20, tftHeight - 29, (tftWidth - 40) * (frame + 1) / 12, 2, DedSec::Text);
+        if (frame <= 8) drawBootLogo(frame, false);
     }
     return true;
 }

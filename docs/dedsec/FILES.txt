@@ -78,3 +78,25 @@ docs/dedsec/MONOCROMO.md
 docs/dedsec/release-2026.10.24-6de6ad3f.json (hashes da primeira imagem)
 docs/dedsec/monochrome-phase1-image.json
 docs/dedsec/monochrome-build-evidence.zip
+
+Artes dos anexos e boot:
+src/core/dedsec_art.h
+src/core/dedsec_art.cpp
+src/core/dedsec_art_data.inc
+src/core/menu_items/WifiMenu.cpp
+src/core/menu_items/BleMenu.cpp
+src/core/menu_items/ConfigMenu.cpp
+src/modules/others/dedsec.cpp
+src/main.cpp
+media/dedsec/source/ (quatro PNGs anexados)
+media/dedsec/preview/ (quatro previas de 2 bits)
+media/dedsec/assets.json
+media/dedsec/README.md
+tools/dedsec/encode_art.py
+tools/dedsec/test_art.py
+tools/dedsec/check_art_image.py
+tools/dedsec/requirements-assets.txt
+docs/dedsec/ARTES.md
+docs/dedsec/release-2026.10.24-bw.1.json
+docs/dedsec/artwork-icons-image.json
+docs/dedsec/artwork-build-evidence.zip

@@ -1,4 +1,7 @@
 #include "BleMenu.h"
+#ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
+#endif
 #include "core/display.h"
 #include "core/utils.h"
 #include "modules/badusb_ble/ducky_typer.h"
@@ -49,6 +52,11 @@ void BleMenu::optionsMenu() {
 
 void BleMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Bluetooth, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
 
     int lineWidth = scale * 5;
     int iconW = scale * 36;

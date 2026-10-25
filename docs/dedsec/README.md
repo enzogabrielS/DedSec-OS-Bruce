@@ -102,10 +102,16 @@ factory ocupa 3,75 MiB e não há segundo slot OTA; use a conexão serial.
 ## Uso
 
 * O menu principal do Bruce abre depois da animação DedSec de até 720 ms.
+  A logo do anexo aparece desde o primeiro acesso ao display, substituindo
+  a tela técnica de montagem de arquivos. As etapas reais vão para a serial.
+  Durante operações bloqueantes de armazenamento, a logo permanece visível;
+  a animação curta roda no loop depois da inicialização, sem uma tarefa extra.
   Toque para pular; desative em `Config > Display & UI > DedSec UI`.
   O painel em `Config > Live dashboard` mostra modelo, Wi-Fi, IP, RSSI, controlador BLE,
   último estado de montagem SD, heap interno livre, maior bloco e estado do FS/config.
   Toque para voltar ao menu. A aba adicional System foi removida.
+* Os ícones padrão de WiFi, Bluetooth e Config usam os respectivos anexos
+  otimizados. Arquivos de tema personalizados continuam tendo prioridade.
 * `WiFi > WiFi survey`: busca passiva sem associação a APs, até 24 registros;
   SSID, BSSID, canal, RSSI e autenticação. ESC cancela. O modo Wi-Fi anterior
   é restaurado; a lista temporária é liberada.

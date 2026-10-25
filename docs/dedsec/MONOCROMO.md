@@ -1,5 +1,8 @@
 # Revisão preto e branco — 24/10/2026
 
+Registro da versão `2026.10.24-bw.1`. A revisão com os anexos e a nova
+apresentação desde o início do boot está em [ARTES.md](ARTES.md).
+
 Versão do pacote: `2026.10.24-bw.1`. A base continua sendo o Bruce oficial e o
 ambiente continua `DedSec-CYD-2432S028`, sem mudanças de pinos ou partições.
 
@@ -31,8 +34,8 @@ somente para instalar esta revisão sobre a versão DedSec anterior.
 
 ## Validação
 
-Os números atuais de aplicação, imagem completa, espaço livre e SHA-256 estão
-em [DedSec-CYD-2432S028-image.json](DedSec-CYD-2432S028-image.json).
+Os números desta revisão de aplicação, imagem completa, espaço livre e SHA-256
+estão em [release-2026.10.24-bw.1.json](release-2026.10.24-bw.1.json).
 O relatório inicial em [VALIDACAO.md](VALIDACAO.md) é histórico; o seu JSON
 original está em `release-2026.10.24-6de6ad3f.json`.
 

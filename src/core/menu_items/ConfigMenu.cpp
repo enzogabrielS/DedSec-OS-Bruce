@@ -1,5 +1,6 @@
 #include "ConfigMenu.h"
 #ifdef DEDSEC_OS
+#include "core/dedsec_art.h"
 #include "modules/others/dedsec.h"
 #endif
 #include "../mykeyboard.h"
@@ -372,6 +373,11 @@ void ConfigMenu::switchToUARTSerial() {
 **********************************************************************/
 void ConfigMenu::drawIcon(float scale) {
     clearIconArea();
+#ifdef DEDSEC_OS
+    dedsecDrawArt(DedSecArt::Config, iconCenterX, iconCenterY, iconAreaW - 8, iconAreaH - 8,
+                  bruceConfig.priColor, bruceConfig.bgColor);
+    return;
+#endif
     int radius = scale * 9;
 
     // Draw 6 gear teeth segments

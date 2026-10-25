@@ -283,7 +283,7 @@ void boot_screen() {
  *********************************************************************/
 void boot_screen_anim() {
 #ifdef DEDSEC_OS
-    // Real setup stages already drew the boot sequence. No decorative wait.
+    // DedSec branding is drawn at setup checkpoints and animated by loop().
     return;
 #else
     boot_screen();

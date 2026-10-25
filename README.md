@@ -8,6 +8,7 @@ preservando a arquitetura, os drivers e as ferramentas compatíveis da base.
 - [Webflasher USB — instalar pelo navegador](https://enzogabrielS.github.io/DedSec-OS-Bruce/)
 - [Relatório de validação e limitações](docs/dedsec/VALIDACAO.md)
 - [Revisão preto e branco, animação e menus](docs/dedsec/MONOCROMO.md)
+- [Logo e símbolos dos anexos na firmware](docs/dedsec/ARTES.md)
 - [Auditoria da placa e da arquitetura](docs/dedsec/AUDITORIA.md)
 
 Ambiente PlatformIO: `DedSec-CYD-2432S028`. Compilação validada;
