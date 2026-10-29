@@ -1,8 +1,14 @@
-export function validateManifest(manifest, release) {
+import { firmwareById } from "./catalog.mjs";
+
+export function validateManifest(manifest, release, editionId = "classic") {
+  const edition = firmwareById(editionId);
   const builds = manifest.builds;
   if (builds?.length !== 1 || builds[0].chipFamily !== "ESP32" ||
+      manifest.name !== edition.name + " — CYD ESP32-2432S028" ||
       builds[0].parts?.length !== 1 || builds[0].parts[0].offset !== 0 ||
-      builds[0].parts[0].path !== "firmware/DedSec-OS-CYD-2432S028.bin" ||
+      builds[0].parts[0].path !== edition.binary ||
+      release.validation?.environment !== edition.environment ||
+      (release.variant ?? "classic") !== edition.id ||
       manifest.version !== release.version || manifest.new_install_prompt_erase !== true ||
       manifest.new_install_improv_wait_time !== 0) {
     throw new Error("Manifesto incompatível com a CYD padrão.");

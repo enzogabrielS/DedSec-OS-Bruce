@@ -1,4 +1,7 @@
 #include "display.h"
+#ifdef DEDSEC_GRID
+#include "core/dedsec_grid.h"
+#endif
 #ifdef DEDSEC_OS
 #include "core/dedsec_palette.h"
 #endif
@@ -592,7 +595,24 @@ int loopOptions(
     unsigned long menuOpenTs =
         0; // timestamp when this menu was first rendered (per-invocation, not shared across nested menus)
     drawMainBorder();
+#ifdef DEDSEC_GRID
+    // External Bruce themes and custom preview callbacks keep their native UI.
+    bool gridMenu = menuType == MENU_TYPE_MAIN ? bruceConfig.themePath.isEmpty() : menuType == MENU_TYPE_SUBMENU;
+    if (menuType == MENU_TYPE_SUBMENU) {
+        for (const auto &option : options) {
+            if (option.hover) { gridMenu = false; break; }
+        }
+    }
+#endif
     while (1) {
+#ifdef DEDSEC_GRID
+        int gridChoice = -1;
+        static uint32_t gridStatusAt = 0;
+        if (gridMenu && millis() - gridStatusAt >= 1000) {
+            gridStatusAt = millis();
+            dedsecGridStatus();
+        }
+#endif
         // Check for shutdown before drawing menu to avoid drawing a black bar on the screen
         if (exit) break;
         if (menuType == MENU_TYPE_MAIN) {
@@ -615,6 +635,12 @@ int loopOptions(
             options[index].hovered = true;
 
             bool renderedByLambda = false;
+#ifdef DEDSEC_GRID
+            if (gridMenu) {
+                dedsecGridDraw(options, index, menuType == MENU_TYPE_MAIN, subText, firstRender);
+                renderedByLambda = true;
+            } else
+#endif
             if (options[index].hover)
                 renderedByLambda = options[index].hover(options[index].hoverPointer, true);
 
@@ -635,6 +661,36 @@ int loopOptions(
             redraw = false;
         }
 
+#ifdef DEDSEC_GRID
+        if (gridMenu && touchPoint.pressed) {
+            // Reuse the driver's debounced press. Consume its legacy heat-map
+            // flags atomically so a card tap cannot also trigger Prev/Sel/Next.
+            vTaskSuspend(xHandle);
+            const int x = touchPoint.x, y = touchPoint.y;
+            touchPoint.Clear();
+            PrevPress = NextPress = UpPress = DownPress = SelPress = EscPress = AnyKeyPress = false;
+            vTaskResume(xHandle);
+            if (millis() - menuOpenTs > 600) {
+                const bool main = menuType == MENU_TYPE_MAIN;
+                const int hit = dedsecGridHit(x, y, options.size(), index, main);
+                if (hit == -4) { index = -1; break; }
+                if (hit == -2 || hit == -3) {
+                    index = dedsecGridPage(options.size(), index, main, hit == -2 ? -1 : 1);
+                    if (!options[index].enabled) {
+                        const int next = findNextEnabled(index, 1);
+                        if (next >= 0) index = next;
+                    }
+                    redraw = true;
+                    continue;
+                }
+                if (hit >= 0 && options[hit].enabled) {
+                    gridChoice = hit;
+                    index = hit;
+                    dedsecGridDraw(options, index, main, subText, false);
+                }
+            }
+        }
+#endif
         // handleSerialCommands(); // always use serial task for it
 #ifdef HAS_KEYBOARD
         // Only process shortcuts on the main menu; the menuType check must short-circuit
@@ -751,7 +807,11 @@ int loopOptions(
         // Allow a short grace period for the user to release the button first.
         static const unsigned long MENU_SELECT_IGNORE_MS = 600; // ms to ignore SEL after menu opens
 
-        if (forceMenuOption >= 0 || (millis() - menuOpenTs > MENU_SELECT_IGNORE_MS && check(SelPress))) {
+        if (forceMenuOption >= 0 ||
+#ifdef DEDSEC_GRID
+            gridChoice >= 0 ||
+#endif
+            (millis() - menuOpenTs > MENU_SELECT_IGNORE_MS && check(SelPress))) {
             uint16_t chosen = index;
             if (forceMenuOption >= 0) {
                 chosen = forceMenuOption;
@@ -963,7 +1023,11 @@ void drawStatusBar() {
     tft.fillRect(6, 6, tftWidth - 12, 19, bruceConfig.bgColor);
     tft.setTextColor(DedSec::Text, bruceConfig.bgColor);
     tft.setTextSize(1);
+#ifdef DEDSEC_GRID
+    tft.drawString("DEDSEC / GRID", 44, 12, 1);
+#else
     tft.drawString("DEDSEC OS", 44, 12, 1);
+#endif
     tft.drawFastHLine(6, 25, tftWidth - 12, bruceConfig.priColor);
     // States only: no synthetic clock or battery indicator on a bare CYD.
     tft.setTextColor(bruceConfig.secColor, bruceConfig.bgColor);

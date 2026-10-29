@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { webcrypto } from "node:crypto";
 import { validateManifest, verifyFirmware } from "../../webflasher/integrity.mjs";
+import { firmwareById, selectionGate } from "../../webflasher/catalog.mjs";
 
 const base = new URL("../../webflasher/", import.meta.url);
 const manifest = JSON.parse(await readFile(new URL("manifest.json", base)));
@@ -44,4 +45,44 @@ test("a different target in the ESP image header is rejected", async () => {
   const different = data.slice();
   different[0x100c] = 9;
   await assert.rejects(verifyFirmware(different, release.validation, webcrypto), /incompatível/);
+});
+
+const grid = firmwareById("grid");
+const gridManifest = JSON.parse(await readFile(new URL(grid.manifest, base)));
+const gridRelease = JSON.parse(await readFile(new URL(grid.release, base)));
+const gridData = new Uint8Array(await readFile(new URL(grid.binary, base)));
+
+test("Grid has its own verified CYD image and manifest", async () => {
+  validateManifest(gridManifest, gridRelease, "grid");
+  assert.equal(await verifyFirmware(gridData, gridRelease.validation, webcrypto), gridRelease.validation.merged_sha256);
+  assert.notEqual(gridRelease.validation.merged_sha256, release.validation.merged_sha256);
+});
+
+test("mixing editions, reports or binary paths is rejected", async () => {
+  assert.throws(() => validateManifest(gridManifest, release, "grid"), /Manifesto/);
+  assert.throws(() => validateManifest(manifest, gridRelease, "classic"), /Manifesto/);
+  assert.throws(() => validateManifest(gridManifest, gridRelease, "classic"), /Manifesto/);
+  const wrongPath = structuredClone(gridManifest);
+  wrongPath.builds[0].parts[0].path = manifest.builds[0].parts[0].path;
+  assert.throws(() => validateManifest(wrongPath, gridRelease, "grid"), /Manifesto/);
+  await assert.rejects(verifyFirmware(data, gridRelease.validation, webcrypto));
+});
+
+test("unknown or inherited edition identifiers cannot select a package", () => {
+  for (const id of ["missing", "__proto__", "constructor", "../classic"])
+    assert.throws(() => firmwareById(id), /desconhecida/);
+});
+
+test("a slow earlier selection cannot overwrite the latest download", async () => {
+  const gate = selectionGate(), shown = [];
+  let finishOld;
+  const oldToken = gate.next();
+  const old = new Promise(resolve => { finishOld = resolve; }).then(() => {
+    if (gate.current(oldToken)) shown.push("classic");
+  });
+  const newToken = gate.next();
+  await Promise.resolve().then(() => { if (gate.current(newToken)) shown.push("grid"); });
+  finishOld();
+  await old;
+  assert.deepEqual(shown, ["grid"]);
 });

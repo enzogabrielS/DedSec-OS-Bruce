@@ -137,3 +137,23 @@ docs/dedsec/release-2026.10.24-bw.3.json
 docs/dedsec/wallpaper-build-evidence.zip
 webflasher/firmware/DedSec-OS-CYD-2432S028.bin
 webflasher/manifest.json e release.json
+
+Edicao Grid e seletor de firmware:
+boards/CYD-2432S028/DedSec-Grid-CYD-2432S028.ini
+src/core/dedsec_grid.cpp e dedsec_grid.h
+src/core/display.cpp
+src/core/dedsec_art.h e dedsec_art.cpp
+src/modules/others/dedsec.cpp
+tools/dedsec/build.ps1 e prepare_webflasher.py
+tools/dedsec/test_webflasher.mjs
+webflasher/catalog.mjs
+webflasher/index.html e styles.css
+webflasher/app.mjs e integrity.mjs
+webflasher/manifest.json (nome Classic; binario preservado)
+webflasher/manifest-grid.json e release-grid.json
+webflasher/firmware/DedSec-OS-Grid-CYD-2432S028.bin
+.github/workflows/dedsec-webflasher.yml
+docs/dedsec/GRID.md
+docs/dedsec/DedSec-Grid-CYD-2432S028-image.json
+docs/dedsec/grid-build-evidence.zip
+docs/dedsec/classic-grid-regression-image.json

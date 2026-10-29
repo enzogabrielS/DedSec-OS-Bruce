@@ -1,0 +1,10 @@
+{
+  "environment": "DedSec-Grid-CYD-2432S028",
+  "application_bytes": 3702032,
+  "application_partition_bytes": 3932160,
+  "application_free_bytes": 230128,
+  "merged_bytes": 3767568,
+  "application_sha256": "151bf19283daf6c8b96e974ed0185ed12764c6a3192806f8360c96a7a34b8022",
+  "merged_sha256": "59660dfd6cab795a236f804e98017454a76779d1f623067883b6ba4fed35637c",
+  "physical_tests": "not performed"
+}

@@ -6,6 +6,7 @@ preservando a arquitetura, os drivers e as ferramentas compatíveis da base.
 
 - [Compilação, instalação e recuperação](docs/dedsec/README.md)
 - [Webflasher USB — instalar pelo navegador](https://enzogabrielS.github.io/DedSec-OS-Bruce/)
+- [DedSec OS Grid — nova interface e escolha entre duas firmwares](docs/dedsec/GRID.md)
 - [Relatório de validação e limitações](docs/dedsec/VALIDACAO.md)
 - [Revisão preto e branco, animação e menus](docs/dedsec/MONOCROMO.md)
 - [Logo e símbolos dos anexos na firmware](docs/dedsec/ARTES.md)
@@ -13,7 +14,8 @@ preservando a arquitetura, os drivers e as ferramentas compatíveis da base.
 - [Fundo alternativo e duração da animação de boot](docs/dedsec/FUNDO.md)
 - [Auditoria da placa e da arquitetura](docs/dedsec/AUDITORIA.md)
 
-Ambiente PlatformIO: `DedSec-CYD-2432S028`. Compilação validada;
+Ambientes PlatformIO: `DedSec-CYD-2432S028` (Classic) e
+`DedSec-Grid-CYD-2432S028` (Grid). Duas interfaces sobre a mesma base Bruce;
 inicialização, touchscreen e estabilidade ainda exigem teste na placa física.
 Utilize as ferramentas somente em equipamentos próprios ou ambientes autorizados.
 A licença AGPL-3.0 e os avisos de terceiros da base foram preservados.

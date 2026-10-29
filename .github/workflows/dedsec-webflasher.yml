@@ -12,6 +12,7 @@ on:
       - 'media/dedsec/**'
       - 'tools/dedsec/test_webflasher.mjs'
       - 'docs/dedsec/DedSec-CYD-2432S028-image.json'
+      - 'docs/dedsec/DedSec-Grid-CYD-2432S028-image.json'
       - '.github/workflows/dedsec-webflasher.yml'
   workflow_dispatch:
 

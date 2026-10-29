@@ -1,5 +1,9 @@
 # DedSec OS — CYD ESP32-2432S028 resistiva
 
+O webflasher oferece duas edições: **Classic**, com o carrossel anterior, e
+**Grid**, com navegação direta em cartões e listas. Detalhes da nova edição,
+compilação e verificações em [GRID.md](GRID.md). As duas usam a mesma CYD.
+
 Personalização do Bruce oficial, sem substituir drivers, navegação, bibliotecas
 ou mapa de partições. Base e análise em [AUDITORIA.md](AUDITORIA.md).
 Resultados reais e limitações em [VALIDACAO.md](VALIDACAO.md).

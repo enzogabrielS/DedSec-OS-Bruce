@@ -84,7 +84,7 @@ void dedsecDrawMenuWallpaper() {
 }
 
 void dedsecDrawArt(DedSecArt art, int centerX, int centerY, int maxWidth, int maxHeight,
-                   uint16_t foreground, uint16_t background, int bandShift) {
+                   uint16_t foreground, uint16_t background, int bandShift, bool solidBackground) {
     if (maxWidth <= 0 || maxHeight <= 0) return;
     const PackedArt &source = getArt(art);
     int width = min(min(int(source.width), maxWidth), 160);
@@ -99,7 +99,7 @@ void dedsecDrawArt(DedSecArt art, int centerX, int centerY, int maxWidth, int ma
     const uint16_t palette[] = {background, blend(foreground, background, 1),
                               blend(foreground, background, 2), foreground};
     uint16_t line[160];
-    const bool overlay = art != DedSecArt::Logo && dedsecMenuWallpaperEnabled();
+    const bool overlay = !solidBackground && art != DedSecArt::Logo && dedsecMenuWallpaperEnabled();
     const WallpaperView view = wallpaperView();
     const bool oldSwap = tft.getSwapBytes();
     tft.setSwapBytes(true);

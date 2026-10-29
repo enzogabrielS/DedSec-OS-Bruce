@@ -4,7 +4,15 @@ Página: https://enzogabrielS.github.io/DedSec-OS-Bruce/
 
 O diretório `webflasher/` contém uma página estática, manifesto ESP Web Tools,
 metadados e a imagem completa validada. Não modifica nem recompila a firmware.
-O pacote atual corresponde ao fundo alternativo e boot longo `2026.10.25-bw.4`.
+O seletor oferece **Classic** (`2026.10.25-bw.4`) e **Grid** (`2026.10.29-grid.1`).
+O nome, versão, tamanho, SHA-256 e download são atualizados para a edição
+selecionada. Trocar a edição limpa a confirmação de substituição da firmware.
+O diálogo de instalação bloqueia novas trocas até ser fechado. Downloads
+atrasados de outra edição não podem substituir a escolha mais recente.
+Cada pacote tem manifesto e relatório próprios e é verificado antes de usar
+os mesmos bytes no ESP Web Tools. Detalhes em [GRID.md](GRID.md).
+
+O pacote Classic corresponde ao fundo alternativo e boot longo `2026.10.25-bw.4`.
 Alterações e validação em [FUNDO.md](FUNDO.md). Os 12 ícones aprovados estão
 documentados em [ICONES.md](ICONES.md). A integração anterior dos
 quatro anexos está em [ARTES.md](ARTES.md). A revisão preto e branco anterior
@@ -15,7 +23,8 @@ A gravação por USB ainda exige validação na CYD real.
 ## Atualizar o pacote
 
 1. Compile com `tools/dedsec/build.ps1`. Revise o relatório JSON de validação.
-2. Execute `python tools/dedsec/prepare_webflasher.py --version SUA_VERSAO`.
+2. Execute `python tools/dedsec/prepare_webflasher.py --variant grid --version SUA_VERSAO`
+   para Grid, ou use `--variant classic` para Classic.
    O script exige que o build local corresponda ao relatório revisado; copia
    somente a imagem completa e gera manifesto/metadados.
 3. Execute os checks abaixo, revise e envie os arquivos por Git.
@@ -25,6 +34,10 @@ python tools/dedsec/prepare_webflasher.py --check
 node --test tools/dedsec/test_webflasher.mjs
 python -m http.server 8765 --bind 127.0.0.1 --directory webflasher
 ```
+
+Sem `--variant`, `--check` verifica **as duas edições**. O CI também valida
+os dois pacotes antes de publicar. As versões podem evoluir independentemente;
+atualizar Grid não sobrescreve o binário Classic.
 
 Abra `http://127.0.0.1:8765`. Não abra `index.html` por `file://`.
 O check funciona em checkout limpo sem PlatformIO: compara SHA-256 com o

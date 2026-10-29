@@ -1,5 +1,5 @@
 {
-  "name": "DedSec OS — CYD ESP32-2432S028",
+  "name": "DedSec OS Classic — CYD ESP32-2432S028",
   "version": "2026.10.25-bw.4",
   "new_install_prompt_erase": true,
   "new_install_improv_wait_time": 0,

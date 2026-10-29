@@ -1,0 +1,17 @@
+{
+  "name": "DedSec OS Grid — CYD ESP32-2432S028",
+  "version": "2026.10.29-grid.1",
+  "new_install_prompt_erase": true,
+  "new_install_improv_wait_time": 0,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        {
+          "path": "firmware/DedSec-OS-Grid-CYD-2432S028.bin",
+          "offset": 0
+        }
+      ]
+    }
+  ]
+}

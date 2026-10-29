@@ -9,22 +9,29 @@ from verify_image import require, verify
 from check_art_image import verify_art
 
 ROOT = Path(__file__).resolve().parents[2]
-FILENAME = "DedSec-OS-CYD-2432S028.bin"
-REPORT = "docs/dedsec/DedSec-CYD-2432S028-image.json"
+VARIANTS = {
+    "classic": ("DedSec-CYD-2432S028", "DedSec-OS-CYD-2432S028.bin", "manifest.json", "release.json", "DedSec OS Classic"),
+    "grid": ("DedSec-Grid-CYD-2432S028", "DedSec-OS-Grid-CYD-2432S028.bin", "manifest-grid.json", "release-grid.json", "DedSec OS Grid"),
+}
 
 
-def check(root: Path) -> dict:
+def check(root: Path, variant: str = "classic") -> dict:
+    environment, binary_name, manifest_name, release_name, name = VARIANTS[variant]
+    report_name = f"docs/dedsec/{environment}-image.json"
     site = root / "webflasher"
-    manifest = json.loads((site / "manifest.json").read_text(encoding="utf-8"))
-    release = json.loads((site / "release.json").read_text(encoding="utf-8"))
-    report = json.loads((root / REPORT).read_text(encoding="utf-8"))
+    manifest = json.loads((site / manifest_name).read_text(encoding="utf-8"))
+    release = json.loads((site / release_name).read_text(encoding="utf-8"))
+    report = json.loads((root / report_name).read_text(encoding="utf-8"))
+    require(report["environment"] == environment and release.get("variant", "classic") == variant,
+            "Wrong firmware edition")
+    require(manifest["name"] == name + " — CYD ESP32-2432S028", "Wrong firmware name")
     require(manifest["builds"] == [{"chipFamily": "ESP32", "parts": [
-        {"path": f"firmware/{FILENAME}", "offset": 0}]}], "Unexpected chip, file or offset")
+        {"path": f"firmware/{binary_name}", "offset": 0}]}], "Unexpected chip, file or offset")
     require(manifest["new_install_prompt_erase"] is True, "Erase must require a choice")
     require(manifest["new_install_improv_wait_time"] == 0, "Bruce does not provide Improv")
     require(release["version"] == manifest["version"], "Release/version mismatch")
     require(release["validation"] == report, "Release differs from validated build")
-    data = (site / "firmware" / FILENAME).read_bytes()
+    data = (site / "firmware" / binary_name).read_bytes()
     require(len(data) == report["merged_bytes"], "Merged image size mismatch")
     require(hashlib.sha256(data).hexdigest() == report["merged_sha256"], "Merged SHA-256 mismatch")
     require(len(data) <= 0x3D0000, "Image overwrites LittleFS")
@@ -45,35 +52,38 @@ def check(root: Path) -> dict:
         if kind == 0 and subtype == 0:
             factory = (start, size)
     require(factory == (0x10000, 0x3C0000), "Unexpected factory partition")
-    for filename in ("index.html", "styles.css", "app.mjs", "integrity.mjs", ".nojekyll"):
+    for filename in ("index.html", "styles.css", "app.mjs", "integrity.mjs", "catalog.mjs", ".nojekyll"):
         require((site / filename).is_file(), f"Missing {filename}")
     verify_art(root, data)
-    return {"version": release["version"], "bytes": len(data), "sha256": report["merged_sha256"]}
+    return {"variant": variant, "version": release["version"], "bytes": len(data), "sha256": report["merged_sha256"]}
 
 
-def prepare(root: Path, version: str) -> None:
-    result = verify(root, "DedSec-CYD-2432S028")
-    report = json.loads((root / REPORT).read_text(encoding="utf-8"))
+def prepare(root: Path, version: str, variant: str = "classic") -> None:
+    environment, binary_name, manifest_name, release_name, name = VARIANTS[variant]
+    result = verify(root, environment)
+    report = json.loads((root / f"docs/dedsec/{environment}-image.json").read_text(encoding="utf-8"))
     require(result == report, "Build differs from checked-in validation report; review it first")
     site = root / "webflasher"
     (site / "firmware").mkdir(parents=True, exist_ok=True)
-    (site / "firmware" / FILENAME).write_bytes((root / "Bruce-DedSec-CYD-2432S028.bin").read_bytes())
-    manifest = {"name": "DedSec OS — CYD ESP32-2432S028", "version": version,
+    (site / "firmware" / binary_name).write_bytes((root / f"Bruce-{environment}.bin").read_bytes())
+    manifest = {"name": name + " — CYD ESP32-2432S028", "version": version,
                 "new_install_prompt_erase": True, "new_install_improv_wait_time": 0,
-                "builds": [{"chipFamily": "ESP32", "parts": [{"path": f"firmware/{FILENAME}", "offset": 0}]}]}
-    release = {"version": version, "board": "CYD ESP32-2432S028 padrão / ILI9341 resistiva / 4 MiB",
+                "builds": [{"chipFamily": "ESP32", "parts": [{"path": f"firmware/{binary_name}", "offset": 0}]}]}
+    release = {"version": version, "variant": variant, "board": "CYD ESP32-2432S028 padrão / ILI9341 resistiva / 4 MiB",
                "validation": result}
-    for filename, value in (("manifest.json", manifest), ("release.json", release)):
+    for filename, value in ((manifest_name, manifest), (release_name, release)):
         (site / filename).write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="Check committed package; no build tools needed")
+    parser.add_argument("--variant", choices=VARIANTS, help="Select edition; --check without this checks both")
     parser.add_argument("--version", help="Explicit release identifier for a newly packaged build")
     args = parser.parse_args()
     if not args.check:
         if not args.version:
             parser.error("use --check, or --version to prepare")
-        prepare(ROOT, args.version)
-    print(json.dumps(check(ROOT), indent=2))
+        prepare(ROOT, args.version, args.variant or "classic")
+    variants = [args.variant] if args.variant else (list(VARIANTS) if args.check else ["classic"])
+    print(json.dumps([check(ROOT, variant) for variant in variants], indent=2))

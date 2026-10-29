@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('DedSec-CYD-2432S028', 'CYD-2432S028')]
+    [ValidateSet('DedSec-CYD-2432S028', 'DedSec-Grid-CYD-2432S028', 'CYD-2432S028')]
     [string]$Environment = 'DedSec-CYD-2432S028'
 )
 $ErrorActionPreference = 'Stop'

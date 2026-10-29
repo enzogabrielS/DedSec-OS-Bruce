@@ -18,7 +18,7 @@
     <div class="eyebrow"><span class="red-line"></span> CYD ESP32-2432S028 / USB INSTALLER</div>
     <section class="intro" aria-labelledby="title">
       <div><h1 id="title">DedSec OS.<br><span>Direto para a sua CYD.</span></h1>
-      <p class="lede">Preto e branco. Animação DedSec. Menus do Bruce.<br>Conecte a placa e instale a versão atual pelo navegador.</p></div>
+      <p class="lede">Duas interfaces. A mesma base Bruce. Identidade DedSec.<br>Escolha sua firmware e instale pelo navegador.</p></div>
       <div class="target" aria-label="Hardware de destino">
         <span class="muted">TARGET / 01</span><strong>ESP32 clássico</strong>
         <span>ILI9341 · touch resistivo</span><span>320 × 240 · flash 4 MiB</span>
@@ -30,6 +30,13 @@
       <div class="install-main">
         <div class="section-number">01 / INSTALAR</div>
         <h2 id="install-title">Do USB à tela.</h2>
+        <label class="firmware-label" for="firmware-select">Escolha a firmware</label>
+        <select id="firmware-select" aria-describedby="firmware-description">
+          <option value="classic">DedSec OS Classic — carrossel original</option>
+          <option value="grid">DedSec OS Grid — nova interface em grade</option>
+        </select>
+        <p id="firmware-description" class="firmware-description">Carregando a edição escolhida…</p>
+        <p class="selection-summary">Você vai instalar: <strong id="selected-name">DedSec OS Classic</strong></p>
         <p>Use Chrome ou Edge no computador, com um cabo USB de <strong>dados</strong>. Feche monitores seriais e retire módulos externos antes de começar.</p>
         <div class="checks">
           <label><input type="checkbox" id="board-confirm"><span>Minha placa é a <strong>CYD ESP32-2432S028 padrão</strong>, com ILI9341, touch resistivo e flash de 4 MiB.</span></label>
@@ -48,7 +55,8 @@
       <aside class="release" aria-label="Informações reais do pacote">
         <div class="section-number">PACOTE / VERIFICAÇÃO</div>
         <p id="integrity-status" role="status" aria-live="polite" class="status">Lendo manifesto e firmware…</p>
-        <dl><div><dt>Versão</dt><dd id="version">—</dd></div>
+        <dl><div><dt>Firmware escolhida</dt><dd id="edition">DedSec OS Classic</dd></div>
+          <div><dt>Versão</dt><dd id="version">—</dd></div>
           <div><dt>Imagem completa</dt><dd id="size">—</dd></div>
           <div><dt>Endereço de gravação</dt><dd>0x000000</dd></div>
           <div><dt>Validação na placa</dt><dd class="pending">Pendente</dd></div></dl>
@@ -62,8 +70,8 @@
       <div class="section-number">02 / NA PRÁTICA</div><h2 id="steps-title">Grave em quatro passos.</h2>
       <ol class="steps">
         <li><strong>Conecte a CYD</strong><p>Use a porta USB serial da placa e um cabo de dados. Aguarde o Windows reconhecer a porta.</p></li>
-        <li><strong>Escolha a porta</strong><p>Marque as confirmações acima, clique em <em>Conectar e instalar</em> e escolha a porta da CYD. Não selecione COM1 sem identificá-la.</p></li>
-        <li><strong>Confirme a instalação</strong><p>No diálogo, escolha <em>Install DedSec OS</em>. Na primeira instalação, após fazer backup, marque <em>Erase device</em> para começar com a flash limpa.</p></li>
+        <li><strong>Escolha firmware e porta</strong><p>Selecione Classic ou Grid e confira o nome e a versão. Marque as confirmações, clique em <em>Conectar e instalar</em> e escolha a porta da CYD.</p></li>
+        <li><strong>Confirme a instalação</strong><p>No diálogo, confira o nome da edição e escolha <em>Install</em>. Na primeira instalação, após fazer backup, marque <em>Erase device</em> para começar com a flash limpa.</p></li>
         <li><strong>Aguarde e reinicie</strong><p>Mantenha o cabo conectado até aparecer a conclusão. Aguarde o reinício; se necessário, pressione RST/EN uma vez. Confira o painel e o toque.</p></li>
       </ol>
     </section>

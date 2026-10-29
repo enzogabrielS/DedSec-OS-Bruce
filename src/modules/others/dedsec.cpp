@@ -69,7 +69,12 @@ void drawBootLogo(unsigned frame, bool backdrop) {
         tft.fillScreen(DedSec::Background);
         tft.setTextSize(2);
         tft.setTextColor(DedSec::Text, DedSec::Background);
+#ifdef DEDSEC_GRID
+        tft.drawCentreString("DEDSEC / GRID", cx, cy + height / 2 + 10, 1);
+        tft.drawFastHLine(20, tft.height() - 30, tft.width() - 40, 0xF945);
+#else
         tft.drawCentreString("DEDSEC OS", cx, cy + height / 2 + 10, 1);
+#endif
     }
     tft.fillRect(cx - width / 2 - 4, cy - height / 2 - 4, width + 8, height + 8, DedSec::Background);
     const int shift = frame == 2 ? 3 : (frame == 3 ? -3 : (frame == 5 ? 2 : (frame == 7 ? -1 : 0)));
